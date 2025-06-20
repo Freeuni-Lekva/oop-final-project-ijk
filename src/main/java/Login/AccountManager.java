@@ -1,4 +1,4 @@
-package Login;
+package main.java.Login;
 
 public class AccountManager {
 }
