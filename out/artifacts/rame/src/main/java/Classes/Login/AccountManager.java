@@ -69,4 +69,35 @@ public class AccountManager {
             return LoginResult.DB_ERROR;
         }
     }
+
+    public boolean usernameExists(String username) {
+        String sql = "SELECT 1 FROM Users WHERE username = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            System.err.println("Database error in usernameExists: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean registerUser(String username, String password, String email) {
+        String sql = "INSERT INTO Users (username, password, email, administrator, requestNotification) VALUES (?, ?, ?, false, false)";
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            pstmt.setString(3, email);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.err.println("Database error in registerUser: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
