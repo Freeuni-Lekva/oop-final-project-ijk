@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Master - Classes.Login</title>
+    <link rel="icon" type="image/png" href="./images/Logo.png">
+    <title>Quizition</title>
 
     <!-- External CSS and Font/Icon CDNs -->
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/LogIn.css">
@@ -39,8 +40,8 @@
     <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-[#0483cc] via-[#5b0c8b] to-[#121d92] relative overflow-hidden">
         <div class="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
         <div class="relative w-full flex flex-col items-center justify-center text-white p-12">
-            <h1 class="font-['Pacifico'] text-6xl mb-6">logo</h1>
-            <p class="text-2xl font-medium mb-4">Welcome to Quiz Master</p>
+            <img src="./images/Logo1.png" alt="Logo" style="width: 110px">
+            <p class="text-2xl font-medium mb-4">Welcome to Quizition</p>
             <p class="text-lg text-center text-white/80 max-w-md">Challenge yourself with our engaging quizzes and test your knowledge across various topics.</p>
             <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/20 to-transparent"></div>
         </div>
@@ -50,9 +51,9 @@
     <div class="w-full lg:w-1/2 flex items-center justify-center p-8 lg:p-12">
         <div class="w-full max-w-md">
             <div class="relative z-10">
-                <div class="text-center mb-8">
-                    <h1 class="font-['Pacifico'] text-4xl text-primary mb-2">logo</h1>
-                    <p class="text-[#121d92] font-medium">Test Your Knowledge</p>
+                <div class="text-center items-center mb-8">
+                    <img src="./images/Logo.png" alt="Logo" style="width: 110px; display: initial">
+                    <p class="text-[#121d92] font-medium">You VS Smart</p>
                 </div>
 
                 <%-- Check for different login error parameters and display the correct message --%>
@@ -115,7 +116,7 @@
                             <div class="absolute bg-white px-4 text-sm text-gray-500">OR</div>
                         </div>
 
-                        <a href="register.jsp" class="signup-button w-full block text-center py-3 text-[#5b0c8b] font-medium rounded-button whitespace-nowrap !rounded-button" style="text-decoration: none;">Create New Account</a>
+                        <a href="Register.jsp" class="signup-button w-full block text-center py-3 text-[#5b0c8b] font-medium rounded-button whitespace-nowrap !rounded-button" style="text-decoration: none;">Create New Account</a>
                     </div>
                 </form>
 
