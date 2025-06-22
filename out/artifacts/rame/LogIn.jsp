@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Master - Login</title>
+    <title>Quiz Master - Classes.Login</title>
 
     <!-- External CSS and Font/Icon CDNs -->
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/LogIn.css">
@@ -55,7 +55,21 @@
                     <p class="text-[#121d92] font-medium">Test Your Knowledge</p>
                 </div>
 
-                <!-- Login form -->
+                <%-- Check for different login error parameters and display the correct message --%>
+                <% String error = request.getParameter("error");
+                   if (error != null) { %>
+                    <div style="color: #D8000C; background-color: #FFD2D2; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: 500;">
+                        <% if ("user_not_found".equals(error)) { %>
+                            That username does not exist. Please try again.
+                        <% } else if ("incorrect_password".equals(error)) { %>
+                            The password you entered is incorrect.
+                        <% } else { %>
+                            An error occurred. Please try again later.
+                        <% } %>
+                    </div>
+                <% } %>
+
+                <!-- Classes.Login form -->
                 <form action="${pageContext.request.contextPath}/login" method="post">
                     <div class="space-y-5">
                         <div>

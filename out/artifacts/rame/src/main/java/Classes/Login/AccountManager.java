@@ -1,0 +1,72 @@
+package Classes.Login;
+
+import java.sql.*;
+
+public class AccountManager {
+
+    // An enum to represent the different outcomes of a login attempt.
+    public enum LoginResult {
+        SUCCESS,
+        USER_NOT_FOUND,
+        INCORRECT_PASSWORD,
+        DB_ERROR
+    }
+
+    // --- Database Connection Details ---
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/quizdb";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "Alerteki1!"; // Update if you have a different password
+
+    public AccountManager() {
+        // Explicitly load the MySQL JDBC driver.
+        // This is a robust way to ensure the driver is available.
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            // This error happens if the MySQL Connector/J JAR is not in the classpath.
+            System.err.println("MySQL JDBC Driver not found!");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Authenticates a user by first finding the user, then checking the password.
+     * @param username The user's username.
+     * @param password The user's password.
+     * @return A LoginResult enum indicating the outcome.
+     */
+    public LoginResult authenticateUser(String username, String password) {
+        if (username == null || password == null) {
+            return LoginResult.DB_ERROR; // Or a more specific error
+        }
+
+        // Step 1: Find the user and retrieve their stored password.
+        String sql = "SELECT password FROM Users WHERE username = ?";
+        
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, username);
+            
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (!rs.next()) {
+                    // Step 2a: If no user was found, return USER_NOT_FOUND.
+                    return LoginResult.USER_NOT_FOUND;
+                }
+                
+                String storedPassword = rs.getString("password");
+                
+                // Step 2b: If user was found, compare the passwords.
+                if (password.equals(storedPassword)) {
+                    return LoginResult.SUCCESS; // Passwords match!
+                } else {
+                    return LoginResult.INCORRECT_PASSWORD; // Passwords do not match.
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Database authentication error: " + e.getMessage());
+            e.printStackTrace();
+            return LoginResult.DB_ERROR;
+        }
+    }
+}
