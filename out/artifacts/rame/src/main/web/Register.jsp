@@ -64,6 +64,22 @@
                         <p class="text-[#121d92] font-medium">Create Your Account</p>
                     </div>
                     
+                    <%-- Show error or success messages --%>
+                    <% String error = request.getParameter("error"); String register = request.getParameter("register");
+                       if (error != null) { %>
+                        <div style="color: #D8000C; background-color: #FFD2D2; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: 500;">
+                            <% if ("username_exists".equals(error)) { %>
+                                That username is already taken. Please choose another.
+                            <% } else { %>
+                                An error occurred. Please try again later.
+                            <% } %>
+                        </div>
+                    <% } else if ("success".equals(register)) { %>
+                        <div style="color: #155724; background-color: #d4edda; padding: 10px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-weight: 500;">
+                            Registration successful! You can now log in.
+                        </div>
+                    <% } %>
+                    
                     <form action="register" method="post"> <%-- Point this to your future registration servlet --%>
                         <div class="space-y-5">
                             
