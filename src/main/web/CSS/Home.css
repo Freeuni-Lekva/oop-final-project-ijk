@@ -207,3 +207,25 @@ input:checked + .slider:before {
     color: white;
     margin-right: 0.75rem;
 }
+.friend-requests-icon {
+    transition: filter 0.2s, fill 0.2s;
+}
+#friendRequestsBtn:hover .friend-requests-icon {
+    filter: brightness(1.2);
+    fill: #7d3fc6;
+}
+#friendRequestsBtn:active .friend-requests-icon {
+    filter: brightness(1.4);
+    fill: #a084ca;
+}
+.categories-icon {
+    transition: filter 0.2s, fill 0.2s;
+}
+#categoryDropdown:hover .categories-icon {
+    filter: brightness(1.2);
+    fill: #2196e3;
+}
+#categoryDropdown:active .categories-icon {
+    filter: brightness(1.4);
+    fill: #4dabf5;
+}

@@ -76,10 +76,10 @@
         <div class="flex items-center space-x-4">
             <div class="relative">
                 <button id="categoryDropdown" class="flex items-center text-gray-700 hover:text-primary transition-colors">
-                    <span>Categories</span>
-                    <div class="w-5 h-5 flex items-center justify-center ml-1">
-                        <i class="ri-arrow-down-s-line"></i>
-                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="#1979bb" class="bi bi-tags-fill categories-icon" viewBox="0 0 16 16">
+                        <path d="M2 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 2 6.586zm3.5 4a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+                        <path d="M1.293 7.793A1 1 0 0 1 1 7.086V2a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l.043-.043z"/>
+                    </svg>
                 </button>
                 <div id="categoryMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Science</a>
@@ -89,12 +89,20 @@
                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mathematics</a>
                 </div>
             </div>
+            <!-- Friend Requests Icon and Dropdown -->
+            <div class="relative">
+                <button id="friendRequestsBtn" style="height:38px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;padding:0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="#5b0c8b" class="bi bi-person-fill-add friend-requests-icon" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                    </svg>
+                </button>
+                <div id="friendRequestsDropdown" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg py-4 px-6 z-20 border border-gray-200" style="min-width:200px;">
+                    <div class="text-center text-gray-700">no new friend requests</div>
+                </div>
+            </div>
             <div class="h-6 w-px bg-gray-200"></div>
             <div class="relative">
                 <button id="userDropdown" class="flex items-center space-x-2">
-                    <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                        <i class="ri-user-line"></i>
-                    </div>
                     <span class="hidden md:inline text-sm font-medium text-gray-700">
                         <%= session.getAttribute("username") != null ? session.getAttribute("username") : "Guest" %>
                     </span>
