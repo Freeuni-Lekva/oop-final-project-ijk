@@ -124,3 +124,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+// Friend Requests Dropdown
+const friendBtn = document.getElementById('friendRequestsBtn');
+const friendDropdown = document.getElementById('friendRequestsDropdown');
+if (friendBtn && friendDropdown) {
+    friendBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        friendDropdown.classList.toggle('hidden');
+    });
+    document.addEventListener('click', function(e) {
+        if (!friendDropdown.classList.contains('hidden')) {
+            friendDropdown.classList.add('hidden');
+        }
+    });
+    friendDropdown.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+}

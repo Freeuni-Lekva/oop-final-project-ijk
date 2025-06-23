@@ -9,3 +9,16 @@ CREATE TABLE Users (
     administrator BOOLEAN,
     requestNotification BOOLEAN
 );
+
+DROP TABLE IF EXISTS FriendRequests;
+CREATE TABLE FriendRequests (
+    usernameFrom TEXT,
+    usernameTo TEXT,
+    date TIMESTAMP
+);
+
+DROP TABLE IF EXISTS Friends;
+CREATE TABLE Friends (
+    usernameFrom TEXT,
+    usenameTo TEXT
+);
