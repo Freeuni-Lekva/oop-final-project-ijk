@@ -15,7 +15,7 @@ public class AccountManager {
     // --- Database Connection Details ---
     private static final String DB_URL = "jdbc:mysql://localhost:3306/quizdb";
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "Alerteki1!"; // Update if you have a different password
+    private static final String DB_PASSWORD = "12345"; // Update if you have a different password
 
     public AccountManager() {
         // Explicitly load the MySQL JDBC driver.
