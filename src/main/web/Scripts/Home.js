@@ -142,3 +142,81 @@ if (friendBtn && friendDropdown) {
         e.stopPropagation();
     });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const addFriendBtn = document.getElementById('openAddFriendModal');
+    const addFriendModal = document.getElementById('addFriendModal');
+    const closeAddFriendModal = document.getElementById('closeAddFriendModal');
+    const friendSearchInput = document.getElementById('friendSearchInput');
+    const friendSearchResults = document.getElementById('friendSearchResults');
+
+    if (addFriendBtn && addFriendModal && closeAddFriendModal) {
+        addFriendBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            addFriendModal.classList.remove('hidden');
+            if (friendSearchInput && friendSearchResults) {
+                friendSearchInput.value = '';
+                friendSearchResults.innerHTML = 'Type to search for users';
+            }
+        });
+        closeAddFriendModal.addEventListener('click', function() {
+            addFriendModal.classList.add('hidden');
+        });
+        addFriendModal.addEventListener('click', function(e) {
+            if (e.target === addFriendModal) {
+                addFriendModal.classList.add('hidden');
+            }
+        });
+    }
+
+    if (friendSearchInput) {
+        let searchTimeout;
+        friendSearchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const query = this.value.trim();
+            if (!query) {
+                friendSearchResults.innerHTML = 'Type to search for users';
+                return;
+            }
+            searchTimeout = setTimeout(() => {
+                fetch(`FriendServlet?action=search&query=${encodeURIComponent(query)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (!Array.isArray(data) || data.length === 0) {
+                            friendSearchResults.innerHTML = '<span class="text-gray-400">no such user</span>';
+                        } else {
+                            friendSearchResults.innerHTML = data.map(user => `
+                                <div class="flex items-center justify-between bg-gray-50 rounded px-3 py-2">
+                                    <span class="text-gray-700">${user}</span>
+                                </div>
+                            `).join('');
+                        }
+                    });
+            }, 300);
+        });
+    }
+});
+
+const friendSearchBtn = document.getElementById('friendSearchBtn');
+if (friendSearchBtn && friendSearchInput && friendSearchResults) {
+    friendSearchBtn.addEventListener('click', function() {
+        const query = friendSearchInput.value.trim();
+        if (!query) {
+            friendSearchResults.innerHTML = 'Type to search for users';
+            return;
+        }
+        fetch(`FriendServlet?action=search&query=${encodeURIComponent(query)}`)
+            .then(res => res.json())
+            .then(data => {
+                if (!data || !data.username) {
+                    friendSearchResults.innerHTML = '<span class="text-gray-400">no such user</span>';
+                } else {
+                    friendSearchResults.innerHTML = `
+                        <div class="flex items-center justify-between bg-gray-50 rounded px-3 py-2">
+                            <span class="text-gray-700">${data.username}</span>
+                        </div>
+                    `;
+                }
+            });
+    });
+}
