@@ -208,14 +208,14 @@ if (friendSearchBtn && friendSearchInput && friendSearchResults) {
         fetch(`FriendServlet?action=search&query=${encodeURIComponent(query)}`)
             .then(res => res.json())
             .then(data => {
-                if (!data || !data.username) {
+                if (!Array.isArray(data) || data.length === 0) {
                     friendSearchResults.innerHTML = '<span class="text-gray-400">no such user</span>';
                 } else {
-                    friendSearchResults.innerHTML = `
+                    friendSearchResults.innerHTML = data.map(user => `
                         <div class="flex items-center justify-between bg-gray-50 rounded px-3 py-2">
-                            <span class="text-gray-700">${data.username}</span>
+                            <span class="text-gray-700">${user}</span>
                         </div>
-                    `;
+                    `).join('');
                 }
             });
     });

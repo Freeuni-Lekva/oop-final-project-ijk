@@ -511,7 +511,6 @@
     <h2 class="text-xl font-bold mb-4 text-center">Add New Friend</h2>
     <div class="flex mb-4">
       <input id="friendSearchInput" type="text" placeholder="Search users..." class="quiz-input flex-1" autocomplete="off">
-      <button id="friendSearchBtn" class="ml-2 px-4 py-2 bg-primary text-white font-medium rounded hover:bg-primary/90 transition-colors">Search</button>
     </div>
     <div id="friendSearchResults" class="space-y-2 min-h-[40px] text-center text-gray-400">Type to search for users</div>
   </div>
