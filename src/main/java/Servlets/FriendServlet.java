@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 // ... existing code ...
 @WebServlet("/FriendServlet")
 public class FriendServlet extends HttpServlet {
@@ -17,14 +18,15 @@ public class FriendServlet extends HttpServlet {
         if ("search".equals(action)) {
             String query = request.getParameter("query");
             String currentUser = (String) request.getSession().getAttribute("username");
-            String foundUser = FriendsManager.searchUserForFriend(currentUser, query);
+            List<String> foundUsers = FriendsManager.searchUserForFriend(currentUser, query);
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();
-            if (foundUser != null) {
-                out.write("{\"username\":\"" + foundUser + "\"}");
-            } else {
-                out.write("{}");
+            out.write("[");
+            for (int i = 0; i < foundUsers.size(); i++) {
+                out.write('"' + foundUsers.get(i) + '"');
+                if (i < foundUsers.size() - 1) out.write(",");
             }
+            out.write("]");
             return;
         }
     }
