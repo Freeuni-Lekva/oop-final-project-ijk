@@ -502,18 +502,18 @@
         </div>
     </div>
 </footer>
-<!-- Scripts -->
-<script src="Scripts/Home.js"></script>
 <!-- Add Friend Modal -->
 <div id="addFriendModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
-  <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
-    <button id="closeAddFriendModal" class="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
-    <h2 class="text-xl font-bold mb-4 text-center">Add New Friend</h2>
-    <div class="flex mb-4">
-      <input id="friendSearchInput" type="text" placeholder="Search users..." class="quiz-input flex-1" autocomplete="off">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+        <button id="closeAddFriendModal" class="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>
+        <h2 class="text-xl font-bold mb-4 text-center">Add New Friend</h2>
+        <div class="flex mb-4">
+            <input id="friendSearchInput" type="text" placeholder="Search users..." class="quiz-input flex-1" autocomplete="off">
+        </div>
+        <div id="friendSearchResults" class="space-y-2 min-h-[40px] text-center text-gray-400">Type to search for users</div>
     </div>
-    <div id="friendSearchResults" class="space-y-2 min-h-[40px] text-center text-gray-400">Type to search for users</div>
-  </div>
 </div>
+<!-- Scripts -->
+<script src="Scripts/Home.js"></script>
 </body>
 </html>
