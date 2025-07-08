@@ -167,4 +167,22 @@ public class FriendsManager {
             return false;
         }
     }
+
+    public static List<String> getFriendsList(String username) {
+        List<String> friends = new ArrayList<>();
+        String sql = "SELECT CASE WHEN usernameFrom = ? THEN usenameTo ELSE usernameFrom END AS friend FROM Friends WHERE usernameFrom = ? OR usenameTo = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setString(2, username);
+            stmt.setString(3, username);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                friends.add(rs.getString("friend"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return friends;
+    }
 }
