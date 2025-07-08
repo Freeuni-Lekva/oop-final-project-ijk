@@ -1,0 +1,332 @@
+/* Styles for LogIn.jsp will be placed here */
+
+/* --- Font Imports --- */
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* --- Base Styles --- */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8fafc; /* A light off-white for the main background */
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.login-page-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- Left Decorative Panel --- */
+.left-panel {
+    display: none; /* Hidden on small screens */
+    width: 50%;
+    background: linear-gradient(135deg, #0483cc, #5b0c8b, #121d92);
+    position: relative;
+    overflow: hidden;
+    color: white;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 48px;
+}
+
+.left-panel .logo {
+    font-family: 'Pacifico', cursive;
+    font-size: 64px;
+    margin-bottom: 24px;
+}
+
+.left-panel h2 {
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+.left-panel p {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 400px;
+}
+
+/* --- Right Form Panel --- */
+.right-panel {
+    width: 100%; /* Full width on small screens */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    background-color: white;
+}
+
+.login-form-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.form-header .logo {
+    font-family: 'Pacifico', cursive;
+    font-size: 48px;
+    color: #0483cc;
+    margin-bottom: 8px;
+}
+
+.form-header p {
+    color: #121d92;
+    font-weight: 500;
+}
+
+/* --- Form Group & Inputs --- */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px 16px 12px 48px; /* Padding for the icon */
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #0483cc;
+    box-shadow: 0 0 0 3px rgba(4, 131, 204, 0.1);
+}
+
+.password-toggle {
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    bottom: 1px;
+    width: 48px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: #555;
+}
+
+.remember-me input {
+    margin-right: 8px;
+}
+
+.forgot-password {
+    font-size: 14px;
+    color: #0483cc;
+    text-decoration: none;
+}
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+
+/* --- Buttons --- */
+.btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #0483cc 0%, #121d92 100%);
+    color: white;
+}
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(4, 131, 204, 0.2);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #5b0c8b;
+    border: 1px solid #5b0c8b;
+}
+.btn-secondary:hover {
+    background-color: rgba(91, 12, 139, 0.05);
+}
+
+
+/* --- Dividers & Social --- */
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #9ca3af;
+    margin: 24px 0;
+}
+.divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e2e8f0;
+}
+.divider:not(:empty)::before {
+    margin-right: .5em;
+}
+.divider:not(:empty)::after {
+    margin-left: .5em;
+}
+
+.social-login-text {
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 16px;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.social-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.social-icon:hover {
+    background-color: #f8fafc;
+}
+.social-icon i {
+    font-size: 20px;
+}
+
+/* --- Footer --- */
+.form-footer {
+    text-align: center;
+    margin-top: 32px;
+    font-size: 12px;
+    color: #6b7280;
+}
+.form-footer a {
+    color: #0483cc;
+    text-decoration: none;
+}
+.form-footer a:hover {
+    text-decoration: underline;
+}
+
+/* --- Media Query for larger screens --- */
+@media (min-width: 1024px) {
+    .left-panel {
+        display: flex;
+    }
+    .right-panel {
+        width: 50%;
+    }
+}
+
+/* Custom styles, as Tailwind classes are handled via CDN in the JSP */
+:where([class^="ri-"])::before { 
+    /* This is a necessary fix for Remix Icon when used this way */
+    content: "\f3c2"; 
+}
+
+.login-button {
+    background: linear-gradient(135deg, #0483cc 0%, #121d92 100%);
+    transition: all 0.3s ease;
+}
+
+.login-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(4, 131, 204, 0.2);
+}
+
+.signup-button {
+    border: 1px solid #5b0c8b;
+    transition: all 0.3s ease;
+}
+
+.signup-button:hover {
+    background-color: rgba(91, 12, 139, 0.05);
+}
+
+.quiz-decoration {
+    background: linear-gradient(135deg, rgba(4, 131, 204, 0.1) 0%, rgba(91, 12, 139, 0.1) 100%);
+}
+
+/* Hides arrows from number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.gradient-border {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.gradient-border::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #0483cc, #5b0c8b, #121d92);
+    z-index: -1;
+    border-radius: 18px;
+} 
