@@ -91,13 +91,16 @@
             </div>
             <!-- Friend Requests Icon and Dropdown -->
             <div class="relative">
-                <button id="friendRequestsBtn" style="height:38px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;padding:0;">
+                <button id="friendRequestsBtn" style="height:38px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;padding:0;position:relative;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="#5b0c8b" class="bi bi-person-fill-add friend-requests-icon" viewBox="0 0 16 16">
                         <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
                     </svg>
+                    <% if (Boolean.TRUE.equals(session.getAttribute("requestNotification"))) { %>
+                        <span id="friendRequestDot" style="position:absolute;top:6px;right:6px;width:12px;height:12px;background:#e53e3e;border-radius:50%;border:2px solid #fff;z-index:10;"></span>
+                    <% } %>
                 </button>
                 <div id="friendRequestsDropdown" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg py-4 px-6 z-20 border border-gray-200" style="min-width:200px;">
-                    <div class="text-center text-gray-700">no new friend requests</div>
+                    <div id="friendRequestsList" class="text-center text-gray-700">no new friend requests</div>
                 </div>
             </div>
             <div class="h-6 w-px bg-gray-200"></div>
@@ -502,6 +505,7 @@
         </div>
     </div>
 </footer>
+<!-- Add Friend Modal -->
 <div id="addFriendModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
     <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
         <button id="closeAddFriendModal" class="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl">&times;</button>

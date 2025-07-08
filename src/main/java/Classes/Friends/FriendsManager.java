@@ -43,12 +43,18 @@ public class FriendsManager {
             return false;
         }
         String sql = "INSERT INTO FriendRequests (usernameFrom, usernameTo, date) VALUES (?, ?, NOW())";
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        String updateNotificationSql = "UPDATE Users SET requestNotification = true WHERE username = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            // Insert friend request
+            PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, fromUser);
             stmt.setString(2, toUser);
             int rowsAffected = stmt.executeUpdate();
             System.out.println("Inserted friend request: " + fromUser + " -> " + toUser + ", rows affected: " + rowsAffected);
+            // Set notification flag
+            PreparedStatement updateStmt = conn.prepareStatement(updateNotificationSql);
+            updateStmt.setString(1, toUser);
+            updateStmt.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
             System.err.println("SQL Exception while inserting friend request: " + e.getMessage());
@@ -80,7 +86,9 @@ public class FriendsManager {
         String addFriendSql = "INSERT INTO Friends (usernameFrom, usenameTo) VALUES (?, ?)";
         // Then, remove from FriendRequests table
         String removeRequestSql = "DELETE FROM FriendRequests WHERE usernameFrom = ? AND usernameTo = ?";
-        
+        // Check for remaining requests
+        String checkPendingSql = "SELECT COUNT(*) FROM FriendRequests WHERE usernameTo = ?";
+        String resetNotificationSql = "UPDATE Users SET requestNotification = false WHERE username = ?";
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
             conn.setAutoCommit(false);
             try {
@@ -89,13 +97,20 @@ public class FriendsManager {
                 addStmt.setString(1, fromUser);
                 addStmt.setString(2, toUser);
                 addStmt.executeUpdate();
-                
                 // Remove request
                 PreparedStatement removeStmt = conn.prepareStatement(removeRequestSql);
                 removeStmt.setString(1, fromUser);
                 removeStmt.setString(2, toUser);
                 removeStmt.executeUpdate();
-                
+                // Check if any pending requests remain
+                PreparedStatement checkStmt = conn.prepareStatement(checkPendingSql);
+                checkStmt.setString(1, toUser);
+                ResultSet rs = checkStmt.executeQuery();
+                if (rs.next() && rs.getInt(1) == 0) {
+                    PreparedStatement resetStmt = conn.prepareStatement(resetNotificationSql);
+                    resetStmt.setString(1, toUser);
+                    resetStmt.executeUpdate();
+                }
                 conn.commit();
                 return true;
             } catch (SQLException e) {
@@ -125,5 +140,31 @@ public class FriendsManager {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static boolean declineFriendRequest(String fromUser, String toUser) {
+        String removeRequestSql = "DELETE FROM FriendRequests WHERE usernameFrom = ? AND usernameTo = ?";
+        String checkPendingSql = "SELECT COUNT(*) FROM FriendRequests WHERE usernameTo = ?";
+        String resetNotificationSql = "UPDATE Users SET requestNotification = false WHERE username = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+            // Remove request
+            PreparedStatement stmt = conn.prepareStatement(removeRequestSql);
+            stmt.setString(1, fromUser);
+            stmt.setString(2, toUser);
+            stmt.executeUpdate();
+            // Check if any pending requests remain
+            PreparedStatement checkStmt = conn.prepareStatement(checkPendingSql);
+            checkStmt.setString(1, toUser);
+            ResultSet rs = checkStmt.executeQuery();
+            if (rs.next() && rs.getInt(1) == 0) {
+                PreparedStatement resetStmt = conn.prepareStatement(resetNotificationSql);
+                resetStmt.setString(1, toUser);
+                resetStmt.executeUpdate();
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

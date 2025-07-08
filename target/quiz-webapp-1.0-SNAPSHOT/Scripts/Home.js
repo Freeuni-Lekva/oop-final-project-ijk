@@ -228,3 +228,133 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+function showNotification(title, message, iconClass) {
+    const notification = document.getElementById('notification');
+    if (!notification) return;
+    // Update icon
+    const icon = notification.querySelector('.notification-icon i');
+    if (icon && iconClass) {
+        icon.className = iconClass;
+    }
+    // Update title and message
+    const titleElem = notification.querySelector('h4');
+    const messageElem = notification.querySelector('p');
+    if (titleElem) titleElem.textContent = title;
+    if (messageElem) messageElem.textContent = message;
+    // Show notification
+    notification.classList.add('show');
+    // Hide after 3 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
+
+function sendFriendRequest(toUser) {
+    fetch('FriendServlet', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `action=sendRequest&toUser=${encodeURIComponent(toUser)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('Friend Request Sent', 'Your friend request was sent successfully!', 'ri-check-line ri-lg');
+        } else {
+            showNotification('Request Failed', 'Could not send friend request. Try again later.', 'ri-close-line ri-lg');
+        }
+    })
+    .catch(error => {
+        showNotification('Network Error', 'Could not connect to server. Try again later.', 'ri-close-line ri-lg');
+    });
+}
+
+function updateFriendRequestDot(show) {
+    let dot = document.getElementById('friendRequestDot');
+    if (show) {
+        if (!dot) {
+            const btn = document.getElementById('friendRequestsBtn');
+            dot = document.createElement('span');
+            dot.id = 'friendRequestDot';
+            dot.style.position = 'absolute';
+            dot.style.top = '6px';
+            dot.style.right = '6px';
+            dot.style.width = '12px';
+            dot.style.height = '12px';
+            dot.style.background = '#e53e3e';
+            dot.style.borderRadius = '50%';
+            dot.style.border = '2px solid #fff';
+            dot.style.zIndex = '10';
+            btn.appendChild(dot);
+        }
+    } else {
+        if (dot) dot.remove();
+    }
+}
+
+function loadPendingFriendRequests() {
+    const list = document.getElementById('friendRequestsList');
+    if (!list) return;
+    fetch('FriendServlet?action=getPendingRequests')
+        .then(res => res.json())
+        .then(data => {
+            updateFriendRequestDot(Array.isArray(data) && data.length > 0);
+            if (!Array.isArray(data) || data.length === 0) {
+                list.innerHTML = '<div class="text-center text-gray-400">no new friend requests</div>';
+            } else {
+                list.innerHTML = '';
+                data.forEach(usernameFrom => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'flex items-center justify-between mb-2';
+                    const name = document.createElement('span');
+                    name.className = 'text-gray-800 font-medium';
+                    name.textContent = usernameFrom;
+                    const actions = document.createElement('div');
+                    actions.className = 'flex flex-row items-center';
+                    // Accept SVG button
+                    const acceptBtn = document.createElement('button');
+                    acceptBtn.innerHTML = `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-person-fill-add\" viewBox=\"0 0 16 16\"><path d=\"M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0\"/><path d=\"M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4\"/></svg>`;
+                    acceptBtn.className = 'px-2 py-1 rounded text-xs font-semibold bg-green-500 text-white hover:bg-green-600 transition-colors mr-2 flex items-center justify-center';
+                    acceptBtn.title = 'Accept';
+                    acceptBtn.onclick = () => handleFriendRequest(usernameFrom, true, wrapper);
+                    // Decline SVG button
+                    const declineBtn = document.createElement('button');
+                    declineBtn.innerHTML = `<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-person-fill-dash\" viewBox=\"0 0 16 16\"><path d=\"M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1m0-7a3 3 0 1 1-6 0 3 3 0 0 1 6 0\"/><path d=\"M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4\"/></svg>`;
+                    declineBtn.className = 'px-2 py-1 rounded text-xs font-semibold bg-red-500 text-white hover:bg-red-600 transition-colors flex items-center justify-center';
+                    declineBtn.title = 'Decline';
+                    declineBtn.onclick = () => handleFriendRequest(usernameFrom, false, wrapper);
+                    actions.appendChild(acceptBtn);
+                    actions.appendChild(declineBtn);
+                    wrapper.appendChild(name);
+                    wrapper.appendChild(actions);
+                    list.appendChild(wrapper);
+                });
+            }
+        });
+}
+
+function handleFriendRequest(fromUser, accept, wrapper) {
+    fetch('FriendServlet', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: accept ? `action=acceptRequest&fromUser=${encodeURIComponent(fromUser)}` : `action=declineRequest&fromUser=${encodeURIComponent(fromUser)}`
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            showNotification(
+                accept ? 'Friend Request Accepted' : 'Friend Request Declined',
+                accept ? 'You are now friends!' : 'Friend request declined.',
+                accept ? 'ri-user-add-line ri-lg' : 'ri-close-line ri-lg'
+            );
+            wrapper.remove();
+        } else {
+            showNotification('Error', 'Could not process request.', 'ri-close-line ri-lg');
+        }
+    })
+    .catch(() => {
+        showNotification('Network Error', 'Could not connect to server.', 'ri-close-line ri-lg');
+    });
+}

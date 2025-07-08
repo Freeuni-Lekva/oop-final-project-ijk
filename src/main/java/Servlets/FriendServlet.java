@@ -87,6 +87,16 @@ public class FriendServlet extends HttpServlet {
                 }
                 break;
                 
+            case "declineRequest":
+                String fromUserDecline = request.getParameter("fromUser");
+                if (fromUserDecline != null && !fromUserDecline.isEmpty()) {
+                    boolean success = FriendsManager.declineFriendRequest(fromUserDecline, currentUser);
+                    out.write("{\"success\": " + success + "}");
+                } else {
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                }
+                break;
+                
             default:
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 break;
