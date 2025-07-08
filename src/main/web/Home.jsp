@@ -502,6 +502,8 @@
         </div>
     </div>
 </footer>
+<!-- Scripts -->
+<script src="Scripts/Home.js"></script>
 <!-- Add Friend Modal -->
 <div id="addFriendModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
     <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
@@ -513,7 +515,5 @@
         <div id="friendSearchResults" class="space-y-2 min-h-[40px] text-center text-gray-400">Type to search for users</div>
     </div>
 </div>
-<!-- Scripts -->
-<script src="Scripts/Home.js"></script>
 </body>
 </html>
