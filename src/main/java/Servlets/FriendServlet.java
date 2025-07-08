@@ -47,6 +47,16 @@ public class FriendServlet extends HttpServlet {
                 out.write("]");
                 break;
                 
+            case "getFriends":
+                List<String> friends = FriendsManager.getFriendsList(currentUser);
+                out.write("[");
+                for (int i = 0; i < friends.size(); i++) {
+                    out.write('"' + friends.get(i) + '"');
+                    if (i < friends.size() - 1) out.write(",");
+                }
+                out.write("]");
+                break;
+                
             default:
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 break;

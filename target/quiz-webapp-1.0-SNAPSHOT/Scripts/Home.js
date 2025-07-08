@@ -93,22 +93,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Notification Popup
-
-document.addEventListener('DOMContentLoaded', function() {
-    const notification = document.getElementById('notification');
-    if (notification) {
-        // Show notification after 5 seconds for demonstration
-        setTimeout(function() {
-            notification.classList.add('show');
-            // Hide notification after 5 seconds
-            setTimeout(function() {
-                notification.classList.remove('show');
-            }, 5000);
-        }, 5000);
-    }
-});
-
 // Leaderboard Tabs
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -358,3 +342,44 @@ function handleFriendRequest(fromUser, accept, wrapper) {
         showNotification('Network Error', 'Could not connect to server.', 'ri-close-line ri-lg');
     });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const openFriendsModal = document.getElementById('openFriendsModal');
+    const friendsModal = document.getElementById('friendsModal');
+    const closeFriendsModal = document.getElementById('closeFriendsModal');
+    const friendsList = document.getElementById('friendsList');
+
+    if (openFriendsModal && friendsModal && closeFriendsModal && friendsList) {
+        openFriendsModal.addEventListener('click', function(e) {
+            e.preventDefault();
+            friendsModal.classList.remove('hidden');
+            friendsList.innerHTML = 'Loading...';
+            fetch('FriendServlet?action=getFriends')
+                .then(res => res.json())
+                .then(data => {
+                    if (!Array.isArray(data) || data.length === 0) {
+                        friendsList.innerHTML = '<div class="text-gray-400">You have no friends yet.</div>';
+                    } else {
+                        friendsList.innerHTML = '';
+                        data.forEach(friend => {
+                            const div = document.createElement('div');
+                            div.className = 'py-2 px-4 bg-gray-100 rounded mb-2';
+                            div.textContent = friend;
+                            friendsList.appendChild(div);
+                        });
+                    }
+                })
+                .catch(() => {
+                    friendsList.innerHTML = '<div class="text-red-500">Failed to load friends.</div>';
+                });
+        });
+        closeFriendsModal.addEventListener('click', function() {
+            friendsModal.classList.add('hidden');
+        });
+        friendsModal.addEventListener('click', function(e) {
+            if (e.target === friendsModal) {
+                friendsModal.classList.add('hidden');
+            }
+        });
+    }
+});
