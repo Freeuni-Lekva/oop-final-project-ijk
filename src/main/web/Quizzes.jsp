@@ -171,8 +171,6 @@
                     <option>Geography</option>
                     <option>Literature</option>
                     <option>Mathematics</option>
-                    <option>Sports</option>
-                    <option>Entertainment</option>
                 </select>
                 <select class="filter-select text-sm pr-8">
                     <option>All Difficulties</option>
@@ -208,10 +206,10 @@
                 <div
                         class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center text-white"
                 >
-                    <i class="ri-flask-line ri-lg"></i>
+                    <i class="ri-timer-line ri-xl"></i>
                 </div>
-                <h3 class="font-semibold text-gray-900 text-sm">Science</h3>
-                <p class="text-xs text-gray-500 mt-1">324 quizzes</p>
+                <h3 class="font-semibold text-gray-900 text-sm">Speed Challange</h3>
+                <p class="text-xs text-gray-500 mt-1">0 quizzes</p>
             </div>
             <div
                     class="category-card bg-white rounded-lg p-4 text-center shadow-sm"
@@ -219,10 +217,13 @@
                 <div
                         class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-secondary to-secondary/80 rounded-lg flex items-center justify-center text-white"
                 >
-                    <i class="ri-ancient-gate-line ri-lg"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418.49.552.865 1.102 1.126 1.532.26-.43.636-.98 1.126-1.532C9.173 4.24 10.798 3 13 3v1c-1.798 0-3.173 1.01-4.126 2.082A9.6 9.6 0 0 0 7.556 8a9.6 9.6 0 0 0 1.317 1.918C9.828 10.99 11.204 12 13 12v1c-2.202 0-3.827-1.24-4.874-2.418A10.6 10.6 0 0 1 7 9.05c-.26.43-.636.98-1.126 1.532C4.827 11.76 3.202 13 1 13H.5a.5.5 0 0 1 0-1H1c1.798 0 3.173-1.01 4.126-2.082A9.6 9.6 0 0 0 6.444 8a9.6 9.6 0 0 0-1.317-1.918C4.172 5.01 2.796 4 1 4H.5a.5.5 0 0 1-.5-.5"/>
+                        <path d="M13 5.466V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192m0 9v-3.932a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192"/>
+                    </svg>
                 </div>
-                <h3 class="font-semibold text-gray-900 text-sm">History</h3>
-                <p class="text-xs text-gray-500 mt-1">287 quizzes</p>
+                <h3 class="font-semibold text-gray-900 text-sm">Random Quiz</h3>
+                <p class="text-xs text-gray-500 mt-1">0 quizzes</p>
             </div>
             <div
                     class="category-card bg-white rounded-lg p-4 text-center shadow-sm"
@@ -230,10 +231,13 @@
                 <div
                         class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-accent to-accent/80 rounded-lg flex items-center justify-center text-white"
                 >
-                    <i class="ri-earth-line ri-lg"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-hdd-network" viewBox="0 0 16 16">
+                        <path d="M4.5 5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1M3 4.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
+                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8.5v3a1.5 1.5 0 0 1 1.5 1.5h5.5a.5.5 0 0 1 0 1H10A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5H.5a.5.5 0 0 1 0-1H6A1.5 1.5 0 0 1 7.5 10V7H2a2 2 0 0 1-2-2zm1 0v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1m6 7.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5"/>
+                    </svg>
                 </div>
-                <h3 class="font-semibold text-gray-900 text-sm">Geography</h3>
-                <p class="text-xs text-gray-500 mt-1">195 quizzes</p>
+                <h3 class="font-semibold text-gray-900 text-sm">Fill in the Blank</h3>
+                <p class="text-xs text-gray-500 mt-1">0 quizzes</p>
             </div>
             <div
                     class="category-card bg-white rounded-lg p-4 text-center shadow-sm"
@@ -241,10 +245,12 @@
                 <div
                         class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center text-white"
                 >
-                    <i class="ri-book-open-line ri-lg"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list-ul" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2m0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                    </svg>
                 </div>
-                <h3 class="font-semibold text-gray-900 text-sm">Literature</h3>
-                <p class="text-xs text-gray-500 mt-1">156 quizzes</p>
+                <h3 class="font-semibold text-gray-900 text-sm">Multiple Choice</h3>
+                <p class="text-xs text-gray-500 mt-1">0 quizzes</p>
             </div>
             <div
                     class="category-card bg-white rounded-lg p-4 text-center shadow-sm"
@@ -252,10 +258,13 @@
                 <div
                         class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center text-white"
                 >
-                    <i class="ri-calculator-line ri-lg"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-question-square" viewBox="0 0 16 16">
+                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                        <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"/>
+                    </svg>
                 </div>
-                <h3 class="font-semibold text-gray-900 text-sm">Mathematics</h3>
-                <p class="text-xs text-gray-500 mt-1">142 quizzes</p>
+                <h3 class="font-semibold text-gray-900 text-sm">Question-Response</h3>
+                <p class="text-xs text-gray-500 mt-1">0 quizzes</p>
             </div>
             <div
                     class="category-card bg-white rounded-lg p-4 text-center shadow-sm"
@@ -263,10 +272,13 @@
                 <div
                         class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center text-white"
                 >
-                    <i class="ri-basketball-line ri-lg"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                        <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+                    </svg>
                 </div>
-                <h3 class="font-semibold text-gray-900 text-sm">Sports</h3>
-                <p class="text-xs text-gray-500 mt-1">98 quizzes</p>
+                <h3 class="font-semibold text-gray-900 text-sm">Picture-Response</h3>
+                <p class="text-xs text-gray-500 mt-1">0 quizzes</p>
             </div>
         </div>
     </div>
@@ -685,97 +697,6 @@
                 </div>
             </div>
 
-            <!-- Recommended Quizzes -->
-            <div class="bg-white rounded-lg shadow-sm p-6">
-                <h3
-                        class="text-lg font-semibold text-gray-900 mb-4 flex items-center"
-                >
-                    <div
-                            class="w-5 h-5 flex items-center justify-center text-primary mr-2"
-                    >
-                        <i class="ri-thumb-up-line"></i>
-                    </div>
-                    Recommended for You
-                </h3>
-                <div class="space-y-4">
-                    <div class="border border-gray-100 rounded-lg p-3">
-                        <h4 class="font-medium text-gray-900 text-sm mb-1">
-                            Ocean Life Discovery
-                        </h4>
-                        <p class="text-xs text-gray-500 mb-2">
-                            Based on your science quiz performance
-                        </p>
-                        <div
-                                class="flex items-center justify-between text-xs text-gray-500"
-                        >
-                            <span>Medium • 18 min</span>
-                            <div class="difficulty-badge difficulty-medium">Medium</div>
-                        </div>
-                    </div>
-                    <div class="border border-gray-100 rounded-lg p-3">
-                        <h4 class="font-medium text-gray-900 text-sm mb-1">
-                            Renaissance Art
-                        </h4>
-                        <p class="text-xs text-gray-500 mb-2">
-                            Popular in History category
-                        </p>
-                        <div
-                                class="flex items-center justify-between text-xs text-gray-500"
-                        >
-                            <span>Hard • 22 min</span>
-                            <div class="difficulty-badge difficulty-hard">Hard</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Popular This Week -->
-            <div class="bg-white rounded-lg shadow-sm p-6">
-                <h3
-                        class="text-lg font-semibold text-gray-900 mb-4 flex items-center"
-                >
-                    <div
-                            class="w-5 h-5 flex items-center justify-center text-primary mr-2"
-                    >
-                        <i class="ri-fire-line"></i>
-                    </div>
-                    Popular This Week
-                </h3>
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-sm font-medium text-primary">1</span>
-                            <span class="text-sm text-gray-900"
-                            >World Capitals Challenge</span
-                            >
-                        </div>
-                        <span class="text-xs text-gray-500">1.2k plays</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-sm font-medium text-primary">2</span>
-                            <span class="text-sm text-gray-900">Movie Trivia Fun</span>
-                        </div>
-                        <span class="text-xs text-gray-500">987 plays</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-sm font-medium text-primary">3</span>
-                            <span class="text-sm text-gray-900">Basic Math Skills</span>
-                        </div>
-                        <span class="text-xs text-gray-500">856 plays</span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-sm font-medium text-primary">4</span>
-                            <span class="text-sm text-gray-900"
-                            >Ancient Civilizations</span
-                            >
-                        </div>
-                        <span class="text-xs text-gray-500">743 plays</span>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </main>
