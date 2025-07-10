@@ -25,7 +25,8 @@ CREATE TABLE Friends (
 
 DROP TABLE IF EXISTS QuestionsTable;
 CREATE TABLE QuestionsTable (
-    id SERIAL PRIMARY KEY,
+    id INT,
+    ordered SERIAL,
     type INT,
     question TEXT,
     possibleAnswers TEXT,
@@ -43,4 +44,16 @@ CREATE TABLE Quizzes (
     random BOOLEAN,
     onePage BOOLEAN,
     immediateCorrection BOOLEAN
+);
+
+DROP TABLE IF EXISTS QuizAttempts;
+CREATE TABLE QuizAttempts (
+    id SERIAL PRIMARY KEY,
+    user_id BIGINT UNSIGNED,
+    quiz_id BIGINT UNSIGNED,
+    score INT,
+    taken_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    duration_seconds INT,
+    FOREIGN KEY (user_id) REFERENCES Users(id),
+    FOREIGN KEY (quiz_id) REFERENCES Quizzes(id)
 );

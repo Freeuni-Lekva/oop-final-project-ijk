@@ -3,6 +3,8 @@ package Classes.Quizzes;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class QuizManager {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/quizdb";
@@ -48,5 +50,25 @@ public class QuizManager {
             e.printStackTrace();
         }
         return quizzes;
+    }
+
+    public Map<String, Integer> getQuizCountByCategory() {
+        Map<String, Integer> categoryCounts = new HashMap<>();
+        String sql = "SELECT category, COUNT(*) as count FROM Quizzes GROUP BY category";
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+                 PreparedStatement pstmt = conn.prepareStatement(sql);
+                 ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    String category = rs.getString("category");
+                    int count = rs.getInt("count");
+                    categoryCounts.put(category, count);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return categoryCounts;
     }
 }
