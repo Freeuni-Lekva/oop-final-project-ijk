@@ -58,8 +58,8 @@
         <div class="flex items-center">
             <img href="/home.jsp" src="./images/Logo1.png" alt="Logo" style="height: 38px; margin-right: 20px">
             <nav class="hidden md:flex space-x-6">
-                <a href="./Home.jsp" class="text-primary font-medium">Home</a>
-                <a href="./Quizzes.jsp" class="text-gray-600 hover:text-primary transition-colors">Quizzes</a>
+                <a href="./Home.jsp" class="text-gray-600 hover:text-primary transition-colors">Home</a>
+                <a href="quizzes" class="text-primary font-medium">Quizzes</a>
                 <a href="#" class="text-gray-600 hover:text-primary transition-colors">Leaderboard</a>
                 <a href="#" class="text-gray-600 hover:text-primary transition-colors">Achievements</a>
             </nav>
@@ -272,7 +272,7 @@
                 <div
                         class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center text-white"
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
                         <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
                         <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
                     </svg>
@@ -289,315 +289,63 @@
         <div class="flex-grow">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-gray-900">All Quizzes</h2>
-                <p class="text-gray-600">Showing 1,247 results</p>
+                <%
+                    int quizCount = 0;
+                    if (request.getAttribute("quizzes") != null) {
+                        java.util.List quizzes = (java.util.List) request.getAttribute("quizzes");
+                        quizCount = quizzes.size();
+                    }
+                %>
+                <p class="text-gray-600">Showing <%= quizCount %> results</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                <!-- Quiz Card 1 -->
-                <div class="quiz-card bg-white rounded-lg p-6 shadow-sm">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="difficulty-badge difficulty-medium">Medium</div>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <div class="rating-stars flex mr-1">
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-line ri-sm"></i>
-                            </div>
-                            <span>4.2</span>
-                        </div>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
-                        World Capitals Challenge
-                    </h3>
-                    <p class="text-gray-600 text-sm mb-4">
-                        Test your knowledge of world capitals with this comprehensive
-                        geography quiz covering all continents.
-                    </p>
-                    <div
-                            class="flex items-center justify-between text-sm text-gray-500 mb-4"
-                    >
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-time-line"></i>
-                            </div>
-                            <span>15 min</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-question-line"></i>
-                            </div>
-                            <span>25 questions</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-user-line"></i>
-                            </div>
-                            <span>1,234 taken</span>
-                        </div>
-                    </div>
-                    <button
-                            class="w-full bg-primary text-white py-2 px-4 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap"
-                    >
-                        <a href="QuizLanding.jsp">Start Quiz</a>
-                    </button>
+<% if (request.getAttribute("quizzes") != null) {
+   java.util.List quizzes = (java.util.List) request.getAttribute("quizzes");
+   for (Object obj : quizzes) {
+      Classes.Quizzes.QuizManager.Quiz quiz = (Classes.Quizzes.QuizManager.Quiz) obj;
+      String difficultyClass = "difficulty-medium";
+      String difficultyLabel = "Medium";
+      if (quiz.difficulty == 1) { difficultyClass = "difficulty-easy"; difficultyLabel = "Easy"; }
+      else if (quiz.difficulty == 2) { difficultyClass = "difficulty-medium"; difficultyLabel = "Medium"; }
+      else if (quiz.difficulty == 3) { difficultyClass = "difficulty-hard"; difficultyLabel = "Hard"; }
+%>
+    <div class="quiz-card bg-white rounded-lg p-6 shadow-sm">
+        <div class="flex justify-between items-start mb-4">
+            <div class="difficulty-badge <%= difficultyClass %>"><%= difficultyLabel %></div>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">
+            <%= quiz.name %>
+        </h3>
+        <p class="text-gray-600 text-sm mb-4">
+            <%= quiz.description %>
+        </p>
+        <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <div class="flex items-center">
+                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                    <i class="ri-time-line"></i>
                 </div>
-
-                <!-- Quiz Card 2 -->
-                <div class="quiz-card bg-white rounded-lg p-6 shadow-sm">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="difficulty-badge difficulty-hard">Hard</div>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <div class="rating-stars flex mr-1">
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                            </div>
-                            <span>4.8</span>
-                        </div>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
-                        Advanced Physics Concepts
-                    </h3>
-                    <p class="text-gray-600 text-sm mb-4">
-                        Dive deep into quantum mechanics, relativity, and advanced
-                        physics principles in this challenging quiz.
-                    </p>
-                    <div
-                            class="flex items-center justify-between text-sm text-gray-500 mb-4"
-                    >
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-time-line"></i>
-                            </div>
-                            <span>30 min</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-question-line"></i>
-                            </div>
-                            <span>40 questions</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-user-line"></i>
-                            </div>
-                            <span>567 taken</span>
-                        </div>
-                    </div>
-                    <button
-                            class="w-full bg-primary text-white py-2 px-4 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap"
-                    >
-                        Start Quiz
-                    </button>
+                <span>15 min</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                    <i class="ri-question-line"></i>
                 </div>
-
-                <!-- Quiz Card 3 -->
-                <div class="quiz-card bg-white rounded-lg p-6 shadow-sm">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="difficulty-badge difficulty-easy">Easy</div>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <div class="rating-stars flex mr-1">
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-line ri-sm"></i>
-                            </div>
-                            <span>4.1</span>
-                        </div>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
-                        Movie Trivia Fun
-                    </h3>
-                    <p class="text-gray-600 text-sm mb-4">
-                        Test your knowledge of popular movies, actors, and film history
-                        with this entertaining quiz.
-                    </p>
-                    <div
-                            class="flex items-center justify-between text-sm text-gray-500 mb-4"
-                    >
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-time-line"></i>
-                            </div>
-                            <span>10 min</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-question-line"></i>
-                            </div>
-                            <span>20 questions</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-user-line"></i>
-                            </div>
-                            <span>2,891 taken</span>
-                        </div>
-                    </div>
-                    <button
-                            class="w-full bg-primary text-white py-2 px-4 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap"
-                    >
-                        Start Quiz
-                    </button>
+                <span>25 questions</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-4 h-4 flex items-center justify-center mr-1">
+                    <i class="ri-user-line"></i>
                 </div>
-
-                <!-- Quiz Card 4 -->
-                <div class="quiz-card bg-white rounded-lg p-6 shadow-sm">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="difficulty-badge difficulty-medium">Medium</div>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <div class="rating-stars flex mr-1">
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-line ri-sm"></i>
-                            </div>
-                            <span>4.3</span>
-                        </div>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
-                        Ancient Civilizations
-                    </h3>
-                    <p class="text-gray-600 text-sm mb-4">
-                        Explore the fascinating world of ancient civilizations from
-                        Egypt to Rome and beyond.
-                    </p>
-                    <div
-                            class="flex items-center justify-between text-sm text-gray-500 mb-4"
-                    >
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-time-line"></i>
-                            </div>
-                            <span>20 min</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-question-line"></i>
-                            </div>
-                            <span>30 questions</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-user-line"></i>
-                            </div>
-                            <span>876 taken</span>
-                        </div>
-                    </div>
-                    <button
-                            class="w-full bg-primary text-white py-2 px-4 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap"
-                    >
-                        Start Quiz
-                    </button>
-                </div>
-
-                <!-- Quiz Card 5 -->
-                <div class="quiz-card bg-white rounded-lg p-6 shadow-sm">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="difficulty-badge difficulty-easy">Easy</div>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <div class="rating-stars flex mr-1">
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                            </div>
-                            <span>4.7</span>
-                        </div>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
-                        Basic Math Skills
-                    </h3>
-                    <p class="text-gray-600 text-sm mb-4">
-                        Refresh your fundamental math skills with this comprehensive
-                        basic mathematics quiz.
-                    </p>
-                    <div
-                            class="flex items-center justify-between text-sm text-gray-500 mb-4"
-                    >
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-time-line"></i>
-                            </div>
-                            <span>12 min</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-question-line"></i>
-                            </div>
-                            <span>15 questions</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-user-line"></i>
-                            </div>
-                            <span>3,456 taken</span>
-                        </div>
-                    </div>
-                    <button
-                            class="w-full bg-primary text-white py-2 px-4 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap"
-                    >
-                        Start Quiz
-                    </button>
-                </div>
-
-                <!-- Quiz Card 6 -->
-                <div class="quiz-card bg-white rounded-lg p-6 shadow-sm">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="difficulty-badge difficulty-hard">Hard</div>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <div class="rating-stars flex mr-1">
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-fill ri-sm"></i>
-                                <i class="ri-star-line ri-sm"></i>
-                            </div>
-                            <span>4.4</span>
-                        </div>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">
-                        Shakespeare Masterpieces
-                    </h3>
-                    <p class="text-gray-600 text-sm mb-4">
-                        Challenge your knowledge of William Shakespeare's greatest works
-                        and literary contributions.
-                    </p>
-                    <div
-                            class="flex items-center justify-between text-sm text-gray-500 mb-4"
-                    >
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-time-line"></i>
-                            </div>
-                            <span>25 min</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-question-line"></i>
-                            </div>
-                            <span>35 questions</span>
-                        </div>
-                        <div class="flex items-center">
-                            <div class="w-4 h-4 flex items-center justify-center mr-1">
-                                <i class="ri-user-line"></i>
-                            </div>
-                            <span>432 taken</span>
-                        </div>
-                    </div>
-                    <button
-                            class="w-full bg-primary text-white py-2 px-4 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap"
-                    >
-                        Start Quiz
-                    </button>
-                </div>
+                <span>1,234 taken</span>
+            </div>
+        </div>
+        <button class="w-full bg-primary text-white py-2 px-4 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
+            <a href="QuizLanding.jsp">Start Quiz</a>
+        </button>
+    </div>
+<%   }
+} %>
             </div>
 
             <!-- Pagination -->

@@ -65,10 +65,10 @@
 <header class="bg-white shadow-sm">
     <div class="container mx-auto px-4 py-4 flex items-center justify-between">
         <div class="flex items-center">
-            <img href="/home.jsp" src="./images/Logo1.png" alt="Logo" style="height: 38px; margin-right: 20px">
+            <img href="/Home.jsp" src="./images/Logo1.png" alt="Logo" style="height: 38px; margin-right: 20px">
             <nav class="hidden md:flex space-x-6">
                 <a href="./Home.jsp" class="text-primary font-medium">Home</a>
-                <a href="./Quizzes.jsp" class="text-gray-600 hover:text-primary transition-colors">Quizzes</a>
+                <a href="quizzes" class="text-gray-600 hover:text-primary transition-colors">Quizzes</a>
                 <a href="#" class="text-gray-600 hover:text-primary transition-colors">Leaderboard</a>
                 <a href="#" class="text-gray-600 hover:text-primary transition-colors">Achievements</a>
             </nav>
