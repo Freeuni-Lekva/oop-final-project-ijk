@@ -22,3 +22,24 @@ CREATE TABLE Friends (
     usernameFrom TEXT,
     usenameTo TEXT
 );
+
+DROP TABLE IF EXISTS QuestionsTable;
+CREATE TABLE QuestionsTable (
+    id SERIAL PRIMARY KEY,
+    type INT,
+    question TEXT,
+    possibleAnswers TEXT,
+    answer TEXT
+);
+
+DROP TABLE IF EXISTS Quizzes;
+CREATE TABLE Quizzes (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    category TEXT,
+    user TEXT,
+    description TEXT,
+    random BOOLEAN,
+    onePage BOOLEAN,
+    immediateCorrection BOOLEAN
+);
