@@ -37,6 +37,7 @@ CREATE TABLE Quizzes (
     id SERIAL PRIMARY KEY,
     name TEXT,
     category TEXT,
+    difficulty INT,
     user TEXT,
     description TEXT,
     random BOOLEAN,
