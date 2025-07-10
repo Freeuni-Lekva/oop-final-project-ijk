@@ -340,7 +340,7 @@
                     <button
                             class="w-full bg-primary text-white py-2 px-4 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap"
                     >
-                        Start Quiz
+                        <a href="QuizLanding.jsp">Start Quiz</a>
                     </button>
                 </div>
 
