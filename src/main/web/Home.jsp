@@ -67,8 +67,8 @@
         <div class="flex items-center">
             <img href="/home.jsp" src="./images/Logo1.png" alt="Logo" style="height: 38px; margin-right: 20px">
             <nav class="hidden md:flex space-x-6">
-                <a href="#" class="text-primary font-medium">Home</a>
-                <a href="#" class="text-gray-600 hover:text-primary transition-colors">Quizzes</a>
+                <a href="./Home.jsp" class="text-primary font-medium">Home</a>
+                <a href="./Quizzes.jsp" class="text-gray-600 hover:text-primary transition-colors">Quizzes</a>
                 <a href="#" class="text-gray-600 hover:text-primary transition-colors">Leaderboard</a>
                 <a href="#" class="text-gray-600 hover:text-primary transition-colors">Achievements</a>
             </nav>
@@ -82,11 +82,11 @@
                     </svg>
                 </button>
                 <div id="categoryMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Science</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">History</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Geography</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Literature</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mathematics</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Speed Challange</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Question-Response</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Fill in the Blank</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Multiple Choice</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Picture-Response</a>
                 </div>
             </div>
             <!-- Friend Requests Icon and Dropdown -->
@@ -140,10 +140,13 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <div class="bg-gradient-to-br from-primary to-primary/80 rounded-lg p-6 text-white transform hover:scale-105 transition-transform cursor-pointer shadow-lg">
                 <div class="w-12 h-12 flex items-center justify-center bg-white/20 rounded-lg mb-4">
-                    <i class="ri-lightbulb-line ri-xl"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418.49.552.865 1.102 1.126 1.532.26-.43.636-.98 1.126-1.532C9.173 4.24 10.798 3 13 3v1c-1.798 0-3.173 1.01-4.126 2.082A9.6 9.6 0 0 0 7.556 8a9.6 9.6 0 0 0 1.317 1.918C9.828 10.99 11.204 12 13 12v1c-2.202 0-3.827-1.24-4.874-2.418A10.6 10.6 0 0 1 7 9.05c-.26.43-.636.98-1.126 1.532C4.827 11.76 3.202 13 1 13H.5a.5.5 0 0 1 0-1H1c1.798 0 3.173-1.01 4.126-2.082A9.6 9.6 0 0 0 6.444 8a9.6 9.6 0 0 0-1.317-1.918C4.172 5.01 2.796 4 1 4H.5a.5.5 0 0 1-.5-.5"/>
+                        <path d="M13 5.466V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192m0 9v-3.932a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192"/>
+                    </svg>
                 </div>
-                <h3 class="text-xl font-semibold mb-2">Knowledge Quiz</h3>
-                <p class="text-white/80 mb-4">Test your general knowledge across various topics</p>
+                <h3 class="text-xl font-semibold mb-2">Random Quiz</h3>
+                <p class="text-white/80 mb-4">Test your general knowledge across random topics</p>
                 <div class="flex items-center text-sm">
                     <span>Start Quiz</span>
                     <div class="w-5 h-5 flex items-center justify-center ml-1">
