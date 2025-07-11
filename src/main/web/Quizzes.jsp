@@ -56,9 +56,9 @@
 <header class="bg-white shadow-sm">
     <div class="container mx-auto px-4 py-4 flex items-center justify-between">
         <div class="flex items-center">
-            <img href="/home.jsp" src="./images/Logo1.png" alt="Logo" style="height: 38px; margin-right: 20px">
+            <img href="home" src="./images/Logo1.png" alt="Logo" style="height: 38px; margin-right: 20px">
             <nav class="hidden md:flex space-x-6">
-                <a href="./Home.jsp" class="text-gray-600 hover:text-primary transition-colors">Home</a>
+                <a href="home" class="text-gray-600 hover:text-primary transition-colors">Home</a>
                 <a href="quizzes" class="text-primary font-medium">Quizzes</a>
                 <a href="#" class="text-gray-600 hover:text-primary transition-colors">Leaderboard</a>
                 <a href="#" class="text-gray-600 hover:text-primary transition-colors">Achievements</a>
@@ -351,65 +351,60 @@
 
         <!-- Sidebar -->
         <div class="lg:w-80 space-y-6">
-            <!-- Recently Attempted -->
-            <div class="bg-white rounded-lg shadow-sm p-6">
-                <h3
-                        class="text-lg font-semibold text-gray-900 mb-4 flex items-center"
-                >
-                    <div
-                            class="w-5 h-5 flex items-center justify-center text-primary mr-2"
-                    >
-                        <i class="ri-history-line"></i>
-                    </div>
-                    Recently Attempted
-                </h3>
-                <div class="space-y-3">
-                    <div class="flex items-center space-x-3">
-                        <div
-                                class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary"
-                        >
-                            <i class="ri-flask-line"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <h4 class="font-medium text-gray-900 text-sm">
-                                Chemistry Basics
-                            </h4>
-                            <p class="text-xs text-gray-500">Score: 85% • 2 days ago</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <div
-                                class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center text-secondary"
-                        >
-                            <i class="ri-ancient-gate-line"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <h4 class="font-medium text-gray-900 text-sm">
-                                World War II
-                            </h4>
-                            <p class="text-xs text-gray-500">Score: 92% • 1 week ago</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <div
-                                class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center text-accent"
-                        >
-                            <i class="ri-earth-line"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <h4 class="font-medium text-gray-900 text-sm">
-                                European Countries
-                            </h4>
-                            <p class="text-xs text-gray-500">Score: 78% • 1 week ago</p>
-                        </div>
-                    </div>
+            <%-- Recently Attempted Box --%>
+            <% java.util.List recentAttempts = (java.util.List) request.getAttribute("recentAttempts"); %>
+            <% if (recentAttempts != null && !recentAttempts.isEmpty()) { %>
+            <div class="bg-white rounded-2xl shadow p-6 mb-8 w-full max-w-xs mx-auto flex flex-col items-start" style="max-width:200px;">
+                <div class="flex items-center mb-4">
+                    <span class="inline-block text-xl text-blue-500 mr-2"><i class="ri-history-line"></i></span>
+                    <span class="font-bold text-lg text-gray-900">Recently Attempted</span>
                 </div>
+                <ul class="w-full">
+                    <% for (Object obj : recentAttempts) {
+                        Classes.Quizzes.QuizManager.QuizAttempt attempt = (Classes.Quizzes.QuizManager.QuizAttempt) obj;
+                        String quizName = "Quiz #" + attempt.quizId;
+                        java.util.List quizzes = (java.util.List) request.getAttribute("quizzes");
+                        for (Object qObj : quizzes) {
+                            Classes.Quizzes.QuizManager.Quiz quiz = (Classes.Quizzes.QuizManager.Quiz) qObj;
+                            if (quiz.id == attempt.quizId) { quizName = quiz.name; break; }
+                        }
+                        int percent = 0;
+                        if (attempt.score > 0 && request.getAttribute("questionCounts") != null && ((java.util.Map)request.getAttribute("questionCounts")).get(attempt.quizId) != null) {
+                            int total = ((java.util.Map)request.getAttribute("questionCounts")).get(attempt.quizId) instanceof Integer ? (Integer)((java.util.Map)request.getAttribute("questionCounts")).get(attempt.quizId) : 0;
+                            if (total > 0) percent = (int)Math.round((attempt.score / total) * 100);
+                        }
+                        java.util.Date now = new java.util.Date();
+                        long diffMillis = now.getTime() - attempt.takenAt.getTime();
+                        long diffHours = diffMillis / (1000 * 60 * 60);
+                        long diffDays = diffHours / 24;
+                        String timeAgo;
+                        if (diffHours < 24) {
+                            timeAgo = diffHours + (diffHours == 1 ? " hour ago" : " hours ago");
+                        } else if (diffDays < 7) {
+                            timeAgo = diffDays + (diffDays == 1 ? " day ago" : " days ago");
+                        } else {
+                            long weeks = diffDays / 7;
+                            timeAgo = weeks + (weeks == 1 ? " week ago" : " weeks ago");
+                        }
+                    %>
+                    <li class="flex items-center mb-4 last:mb-0 w-full">
+                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mr-3">
+                            <!-- Icon placeholder -->
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-semibold text-gray-900 leading-tight"><%= quizName %></div>
+                            <div class="text-sm text-gray-500">Score: <span class="font-medium text-blue-700"><%= percent %>%</span> &bull; <%= timeAgo %></div>
+                        </div>
+                    </li>
+                    <% } %>
+                </ul>
             </div>
+            <% } %>
+
 
         </div>
     </div>
 </main>
-
 
 <!-- Footer -->
 <footer class="bg-white border-t border-gray-200 mt-12">

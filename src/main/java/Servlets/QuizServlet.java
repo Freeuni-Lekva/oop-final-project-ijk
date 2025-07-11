@@ -2,6 +2,7 @@ package Servlets;
 
 import Classes.Quizzes.QuizManager;
 import Classes.Quizzes.QuizManager.Quiz;
+import Classes.Quizzes.QuizManager.QuizAttempt;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,6 +24,15 @@ public class QuizServlet extends HttpServlet {
             questionCounts.put(q.id, manager.getQuestionCountForQuiz(q.id));
         }
         request.setAttribute("questionCounts", questionCounts);
+        // Add recent attempts for the logged-in user
+        HttpSession session = request.getSession(false);
+        List<QuizAttempt> recentAttempts = null;
+        if (session != null && session.getAttribute("userId") != null) {
+            int userId = (Integer) session.getAttribute("userId");
+            List<QuizAttempt> allAttempts = manager.getQuizAttemptsForUser(userId);
+            recentAttempts = allAttempts.size() > 3 ? allAttempts.subList(0, 3) : allAttempts;
+        }
+        request.setAttribute("recentAttempts", recentAttempts);
         request.getRequestDispatcher("/Quizzes.jsp").forward(request, response);
     }
 }
