@@ -29,6 +29,24 @@ public class AccountManager {
         }
     }
 
+    // Hash a password using SHA-1 (from Cracker.java)
+    public static String hashPassword(String password) {
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-1");
+            md.update(password.getBytes());
+            byte[] digest = md.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte b : digest) {
+                int val = b & 0xff;
+                if (val < 16) sb.append('0');
+                sb.append(Integer.toString(val, 16));
+            }
+            return sb.toString();
+        } catch (java.security.NoSuchAlgorithmException e) {
+            throw new RuntimeException("SHA-1 algorithm not found", e);
+        }
+    }
+
     /**
      * Authenticates a user by first finding the user, then checking the password.
      * @param username The user's username.
@@ -40,27 +58,21 @@ public class AccountManager {
             return LoginResult.DB_ERROR; // Or a more specific error
         }
 
-        // Step 1: Find the user and retrieve their stored password.
+        // Step 1: Find the user and retrieve their stored password hash.
         String sql = "SELECT password FROM Users WHERE username = ?";
-        
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
             pstmt.setString(1, username);
-            
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (!rs.next()) {
-                    // Step 2a: If no user was found, return USER_NOT_FOUND.
                     return LoginResult.USER_NOT_FOUND;
                 }
-                
-                String storedPassword = rs.getString("password");
-                
-                // Step 2b: If user was found, compare the passwords.
-                if (password.equals(storedPassword)) {
-                    return LoginResult.SUCCESS; // Passwords match!
+                String storedHash = rs.getString("password");
+                String inputHash = hashPassword(password);
+                if (inputHash.equals(storedHash)) {
+                    return LoginResult.SUCCESS;
                 } else {
-                    return LoginResult.INCORRECT_PASSWORD; // Passwords do not match.
+                    return LoginResult.INCORRECT_PASSWORD;
                 }
             }
         } catch (SQLException e) {
@@ -90,7 +102,7 @@ public class AccountManager {
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, username);
-            pstmt.setString(2, password);
+            pstmt.setString(2, hashPassword(password));
             pstmt.setString(3, email);
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
