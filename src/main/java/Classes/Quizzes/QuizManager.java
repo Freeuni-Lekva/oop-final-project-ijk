@@ -141,7 +141,7 @@ public class QuizManager {
     // Optionally, fetch questions by quiz id if you have a quiz_id column
     public List<Question> getQuestionsByQuizId(int quizId) {
         List<Question> questions = new ArrayList<>();
-        String sql = "SELECT * FROM QuestionsTable WHERE quiz_id = ?";
+        String sql = "SELECT * FROM QuestionsTable WHERE id = ?";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
