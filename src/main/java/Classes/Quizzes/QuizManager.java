@@ -34,6 +34,16 @@ public class QuizManager {
         public int quizId; // Add this if you have a quiz_id column in QuestionsTable
     }
 
+    // QuizAttempt class for returning attempts
+    public static class QuizAttempt {
+        public int id;
+        public int userId;
+        public int quizId;
+        public double score;
+        public Timestamp takenAt;
+        public int durationSeconds;
+    }
+
     public List<Quiz> getAllQuizzes() {
         List<Quiz> quizzes = new ArrayList<>();
         String sql = "SELECT * FROM Quizzes";
@@ -184,5 +194,51 @@ public class QuizManager {
             e.printStackTrace();
         }
         return count;
+    }
+
+    public boolean insertQuizAttempt(int userId, int quizId, double score, int durationSeconds) {
+        String sql = "INSERT INTO QuizAttempts (user_id, quiz_id, score, duration_seconds) VALUES (?, ?, ?, ?)";
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, userId);
+                pstmt.setInt(2, quizId);
+                pstmt.setDouble(3, score);
+                pstmt.setInt(4, durationSeconds);
+                int affected = pstmt.executeUpdate();
+                return affected > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<QuizAttempt> getQuizAttemptsForUser(int userId) {
+        List<QuizAttempt> attempts = new ArrayList<>();
+        String sql = "SELECT * FROM QuizAttempts WHERE user_id = ? ORDER BY taken_at DESC";
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, userId);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        QuizAttempt a = new QuizAttempt();
+                        a.id = rs.getInt("id");
+                        a.userId = rs.getInt("user_id");
+                        a.quizId = rs.getInt("quiz_id");
+                        a.score = rs.getDouble("score");
+                        a.takenAt = rs.getTimestamp("taken_at");
+                        a.durationSeconds = rs.getInt("duration_seconds");
+                        attempts.add(a);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return attempts;
     }
 }

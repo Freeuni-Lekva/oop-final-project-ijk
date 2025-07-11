@@ -93,9 +93,56 @@ function renderQuestion() {
     });
 }
 
+function showSubmitButton(show) {
+    let submitBtn = document.getElementById('submit-btn');
+    if (!submitBtn) {
+        submitBtn = document.createElement('button');
+        submitBtn.className = 'nav-btn submit';
+        submitBtn.id = 'submit-btn';
+        submitBtn.innerHTML = '<i class="ri-check-line"></i> Submit Quiz';
+        submitBtn.onclick = submitQuiz;
+        document.querySelector('.navigation-controls').appendChild(submitBtn);
+    }
+    submitBtn.style.display = show ? '' : 'none';
+}
+
+function submitQuiz() {
+    clearInterval(timerInterval);
+    let correct = 0;
+    for (let i = 0; i < questions.length; i++) {
+        if (answers[i] === questions[i].correctIndex) correct++;
+    }
+    const percent = Math.round((correct / questions.length) * 100);
+    // Hide quiz UI, show result
+    document.querySelector('.quiz-container').innerHTML = `
+        <div id="quiz-result" style="text-align:center; padding:3rem 0;">
+            <div class="quiz-result-icon" style="font-size:4rem; color:#22c55e; margin-bottom:1rem;"><i class="ri-checkbox-circle-line"></i></div>
+            <div class="quiz-result-title" style="font-size:2rem; font-weight:600; margin-bottom:1rem;">Quiz Completed!</div>
+            <div class="quiz-result-score" style="font-size:1.5rem; margin-bottom:0.5rem;">Score: ${correct} / ${questions.length}</div>
+            <div class="quiz-result-percentage" style="font-size:1.25rem; color:#2563eb;">${percent}%</div>
+            <button id="return-home-btn" class="nav-btn submit" style="margin-top:2rem; background:#22c55e; color:#fff; font-size:1.1rem;">Return Home</button>
+        </div>
+    `;
+    document.getElementById('return-home-btn').onclick = function() {
+        fetch('submit-quiz-attempt', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                quizId: quiz.id,
+                score: correct,
+                total: questions.length,
+                percent: percent
+            })
+        }).then(() => {
+            window.location.href = 'quizzes';
+        });
+    };
+}
+
 function renderNav() {
     document.getElementById('prev-btn').disabled = currentQuestion === 0;
     document.getElementById('next-btn').disabled = currentQuestion === totalQuestions - 1;
+    showSubmitButton(currentQuestion === totalQuestions - 1);
 }
 
 document.getElementById('prev-btn').onclick = () => {

@@ -21,11 +21,21 @@
   if (questions != null) {
     for (int i = 0; i < questions.size(); i++) {
       Question q = questions.get(i);
+      // Find correct answer index
+      String[] opts = (q.possibleAnswers != null ? q.possibleAnswers : "").split(q.possibleAnswers != null && q.possibleAnswers.contains("\n") ? "\\n" : ";");
+      int correctIndex = -1;
+      for (int j = 0; j < opts.length; j++) {
+        if (opts[j].trim().equals(q.answer != null ? q.answer.trim() : "")) {
+          correctIndex = j;
+          break;
+        }
+      }
       questionsJson.append("{")
               .append("\"id\":").append(q.id).append(",")
               .append("\"type\":").append(q.type).append(",")
               .append("\"question\":\"").append(escapeJS(q.question)).append("\",")
-              .append("\"possibleAnswers\":\"").append(escapeJS(q.possibleAnswers != null ? q.possibleAnswers : "")).append("\"")
+              .append("\"possibleAnswers\":\"").append(escapeJS(q.possibleAnswers != null ? q.possibleAnswers : "")).append("\",")
+              .append("\"correctIndex\":").append(correctIndex)
               .append("}");
       if (i < questions.size() - 1) questionsJson.append(",");
     }
