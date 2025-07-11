@@ -35,7 +35,8 @@
               .append("\"type\":").append(q.type).append(",")
               .append("\"question\":\"").append(escapeJS(q.question)).append("\",")
               .append("\"possibleAnswers\":\"").append(escapeJS(q.possibleAnswers != null ? q.possibleAnswers : "")).append("\",")
-              .append("\"correctIndex\":").append(correctIndex)
+              .append("\"correctIndex\":").append(correctIndex).append(",")
+              .append("\"answer\":\"").append(escapeJS(q.answer == null ? "" : q.answer)).append("\"")
               .append("}");
       if (i < questions.size() - 1) questionsJson.append(",");
     }

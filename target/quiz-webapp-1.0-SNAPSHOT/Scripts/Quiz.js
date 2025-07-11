@@ -69,28 +69,53 @@ function renderQuestion() {
     document.getElementById('question-number-badge').textContent = currentQuestion + 1;
     document.getElementById('question-number-label').textContent = `Question ${currentQuestion + 1}`;
     document.getElementById('question-title').textContent = q.question;
-    // Render options
     const optionsList = document.getElementById('options-list');
     optionsList.innerHTML = '';
-    // Assume possibleAnswers is a string separated by \n or ;
-    let opts = q.possibleAnswers.includes('\n') ? q.possibleAnswers.split('\n') : q.possibleAnswers.split(';');
-    opts = opts.map(opt => opt.trim()).filter(opt => opt.length > 0);
-    opts.forEach((opt, idx) => {
-        const label = document.createElement('label');
-        label.className = 'option-label' + (answers[currentQuestion] === idx ? ' selected' : '');
-        const radio = document.createElement('input');
-        radio.type = 'radio';
-        radio.className = 'option-radio';
-        radio.name = 'option';
-        radio.checked = answers[currentQuestion] === idx;
-        radio.onclick = () => {
-            answers[currentQuestion] = idx;
+    if (q.type === 1) {
+        // Multiple choice
+        let opts = q.possibleAnswers.includes('\n') ? q.possibleAnswers.split('\n') : q.possibleAnswers.split(';');
+        opts = opts.map(opt => opt.trim()).filter(opt => opt.length > 0);
+        opts.forEach((opt, idx) => {
+            const label = document.createElement('label');
+            label.className = 'option-label' + (answers[currentQuestion] === idx ? ' selected' : '');
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.className = 'option-radio';
+            radio.name = 'option';
+            radio.checked = answers[currentQuestion] === idx;
+            radio.onclick = () => {
+                answers[currentQuestion] = idx;
+                renderAll();
+            };
+            label.appendChild(radio);
+            label.appendChild(document.createTextNode(opt));
+            optionsList.appendChild(label);
+        });
+    } else {
+        // Free text input
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'option-label';
+        input.style.width = '100%';
+        input.value = answers[currentQuestion] !== null ? answers[currentQuestion] : '';
+        input.placeholder = 'Type your answer...';
+        input.onkeydown = (e) => {
+            if (e.key === 'Enter') {
+                answers[currentQuestion] = input.value.trim();
+                renderAll();
+            }
+        };
+        optionsList.appendChild(input);
+        const btn = document.createElement('button');
+        btn.className = 'nav-btn next';
+        btn.style.marginTop = '1rem';
+        btn.textContent = 'Submit Answer';
+        btn.onclick = () => {
+            answers[currentQuestion] = input.value.trim();
             renderAll();
         };
-        label.appendChild(radio);
-        label.appendChild(document.createTextNode(opt));
-        optionsList.appendChild(label);
-    });
+        optionsList.appendChild(btn);
+    }
 }
 
 function showSubmitButton(show) {
@@ -110,7 +135,14 @@ function submitQuiz() {
     clearInterval(timerInterval);
     let correct = 0;
     for (let i = 0; i < questions.length; i++) {
-        if (answers[i] === questions[i].correctIndex) correct++;
+        if (questions[i].type === 1) {
+            if (answers[i] === questions[i].correctIndex) correct++;
+        } else {
+            // Free text: compare to correct answer string (case-insensitive, trimmed)
+            const userAns = (answers[i] || '').trim().toLowerCase();
+            const correctAns = (questions[i].answer || '').trim().toLowerCase();
+            if (userAns && userAns === correctAns) correct++;
+        }
     }
     const percent = Math.round((correct / questions.length) * 100);
     // Hide quiz UI, show result
