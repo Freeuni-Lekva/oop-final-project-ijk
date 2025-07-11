@@ -208,8 +208,8 @@
                 >
                     <i class="ri-timer-line ri-xl"></i>
                 </div>
-                <h3 class="font-semibold text-gray-900 text-sm">Speed Challange</h3>
-                <p class="text-xs text-gray-500 mt-1"><%= ((request.getAttribute("categoryCounts") != null && ((java.util.Map)request.getAttribute("categoryCounts")).get("Speed Challange") != null) ? ((java.util.Map)request.getAttribute("categoryCounts")).get("Speed Challange") : 0) %> quizzes</p>
+                <h3 class="font-semibold text-gray-900 text-sm">Speed Challenge</h3>
+                <p class="text-xs text-gray-500 mt-1"><%= ((request.getAttribute("categoryCounts") != null && ((java.util.Map)request.getAttribute("categoryCounts")).get("Speed Challenge") != null) ? ((java.util.Map)request.getAttribute("categoryCounts")).get("Speed Challenge") : 0) %> quizzes</p>
             </div>
             <div
                     class="category-card bg-white rounded-lg p-4 text-center shadow-sm"
@@ -325,13 +325,13 @@
                 <div class="w-4 h-4 flex items-center justify-center mr-1">
                     <i class="ri-time-line"></i>
                 </div>
-                <span>15 min</span>
+                <span><%= quiz.duration %> min</span>
             </div>
             <div class="flex items-center">
                 <div class="w-4 h-4 flex items-center justify-center mr-1">
                     <i class="ri-question-line"></i>
                 </div>
-                <span>25 questions</span>
+                <span><%= (request.getAttribute("questionCounts") != null && ((java.util.Map)request.getAttribute("questionCounts")).get(quiz.id) != null) ? ((java.util.Map)request.getAttribute("questionCounts")).get(quiz.id) : 0 %> questions</span>
             </div>
             <div class="flex items-center">
                 <div class="w-4 h-4 flex items-center justify-center mr-1">
@@ -341,7 +341,7 @@
             </div>
         </div>
         <button class="w-full bg-primary text-white py-2 px-4 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
-            <a href="QuizLanding.jsp">Start Quiz</a>
+            <a href="quiz-landing?id=<%= quiz.id %>">Start Quiz</a>
         </button>
     </div>
 <%   }
