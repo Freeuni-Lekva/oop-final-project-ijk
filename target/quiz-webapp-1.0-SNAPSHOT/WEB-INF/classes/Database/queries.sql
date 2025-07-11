@@ -61,7 +61,7 @@ CREATE TABLE QuizAttempts (
 
 DROP TABLE IF EXISTS UserPoints;
 CREATE TABLE UserPoints (
-    user_id BIGINT UNSIGNED,
+    user_id BIGINT UNSIGNED PRIMARY KEY ,
     points BIGINT
 );
 

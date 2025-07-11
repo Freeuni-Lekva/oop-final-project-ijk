@@ -258,26 +258,14 @@ public class QuizManager {
         return 0;
     }
 
-    public boolean insertUserPoints(int userId, int points) {
-        String sql = "INSERT INTO UserPoints (user_id, points) VALUES (?, ?)";
+    // Upsert user points: insert or update as needed
+    public boolean upsertUserPoints(int userId, int points) {
+        String sql = "INSERT INTO UserPoints (user_id, points) VALUES (?, ?) ON DUPLICATE KEY UPDATE points = ?";
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, userId);
             pstmt.setInt(2, points);
-            int affectedRows = pstmt.executeUpdate();
-            return affectedRows > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean updateUserPoints(int userId, int points) {
-        String sql = "UPDATE UserPoints SET points = ? WHERE user_id = ?";
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, points);
-            pstmt.setInt(2, userId);
+            pstmt.setInt(3, points);
             int affectedRows = pstmt.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
@@ -287,7 +275,6 @@ public class QuizManager {
     }
 
     public void recalculateAndUpdateUserPoints(int userId) {
-        // Map from quizId to best raw score
         Map<Integer, Double> bestScoreByQuiz = new HashMap<>();
         List<QuizAttempt> attempts = getQuizAttemptsForUser(userId);
         for (QuizAttempt attempt : attempts) {
@@ -297,7 +284,6 @@ public class QuizManager {
                 bestScoreByQuiz.put(quizId, score);
             }
         }
-        // Sum the best raw scores for all quizzes, applying difficulty multiplier
         int totalPoints = 0;
         for (Map.Entry<Integer, Double> entry : bestScoreByQuiz.entrySet()) {
             int quizId = entry.getKey();
@@ -310,12 +296,7 @@ public class QuizManager {
             }
             totalPoints += (int)Math.round(score * multiplier);
         }
-        // Update or insert UserPoints
-        if (getUserPoints(userId) == 0) {
-            insertUserPoints(userId, totalPoints);
-        } else {
-            updateUserPoints(userId, totalPoints);
-        }
+        upsertUserPoints(userId, totalPoints);
     }
 
     // Returns the number of quizzes completed today by the user
