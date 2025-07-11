@@ -291,6 +291,19 @@
             </div>
         </div>
         <!-- Achievements Section -->
+        <%
+            java.util.Map achievements = (java.util.Map) request.getAttribute("achievements");
+            boolean fastLearnerActive = false;
+            boolean onFireActive = false;
+            boolean geniusActive = false;
+            boolean championActive = false;
+            if (achievements != null) {
+                if (achievements.get("FAST_LEARNER") != null) fastLearnerActive = (Boolean) achievements.get("FAST_LEARNER");
+                if (achievements.get("ON_FIRE") != null) onFireActive = (Boolean) achievements.get("ON_FIRE");
+                if (achievements.get("GENIUS") != null) geniusActive = (Boolean) achievements.get("GENIUS");
+                if (achievements.get("CHAMPION") != null) championActive = (Boolean) achievements.get("CHAMPION");
+            }
+        %>
         <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-bold text-gray-900 flex items-center">
@@ -308,29 +321,29 @@
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="flex flex-col items-center">
-                    <div class="achievement-badge bg-gradient-to-br from-primary to-primary/80 mb-2">
+                    <div class="achievement-badge bg-gradient-to-br from-primary to-primary/80 mb-2 <%= fastLearnerActive ? "ring-4 ring-blue-400" : "opacity-40" %>">
                         <i class="ri-rocket-line ri-lg"></i>
                     </div>
                     <span class="text-sm font-medium text-gray-700">Fast Learner</span>
                     <span class="text-xs text-gray-500">Complete 5 quizzes</span>
                 </div>
                 <div class="flex flex-col items-center">
-                    <div class="achievement-badge bg-gradient-to-br from-secondary to-secondary/80 mb-2">
+                    <div class="achievement-badge bg-gradient-to-br from-secondary to-secondary/80 mb-2 <%= onFireActive ? "ring-4 ring-orange-400" : "opacity-40" %>">
                         <i class="ri-fire-line ri-lg"></i>
-                        <div class="badge-notification">1</div>
+                        <% if (onFireActive) { %><div class="badge-notification">ON</div><% } %>
                     </div>
                     <span class="text-sm font-medium text-gray-700">On Fire</span>
-                    <span class="text-xs text-gray-500">3-day streak</span>
+                    <span class="text-xs text-gray-500">2+ quizzes in 1 hour</span>
                 </div>
                 <div class="flex flex-col items-center">
-                    <div class="achievement-badge bg-gradient-to-br from-accent to-accent/80 mb-2">
+                    <div class="achievement-badge bg-gradient-to-br from-accent to-accent/80 mb-2 <%= geniusActive ? "ring-4 ring-purple-400" : "opacity-40" %>">
                         <i class="ri-brain-line ri-lg"></i>
                     </div>
                     <span class="text-sm font-medium text-gray-700">Genius</span>
                     <span class="text-xs text-gray-500">Score 100% on 10 quizzes</span>
                 </div>
                 <div class="flex flex-col items-center">
-                    <div class="achievement-badge bg-gradient-to-br from-primary/80 to-secondary/80 mb-2">
+                    <div class="achievement-badge bg-gradient-to-br from-primary/80 to-secondary/80 mb-2 <%= championActive ? "ring-4 ring-yellow-400" : "opacity-40" %>">
                         <i class="ri-medal-line ri-lg"></i>
                     </div>
                     <span class="text-sm font-medium text-gray-700">Champion</span>

@@ -12,6 +12,7 @@ import Classes.Quizzes.QuizManager.Quiz;
 import Classes.Quizzes.QuizManager.QuizAttempt;
 import java.util.List;
 import Classes.Leaderboard.LeaderboardManager;
+import Classes.Achievements.Achievements;
 
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
@@ -57,6 +58,11 @@ public class HomeServlet extends HttpServlet {
             request.setAttribute("dailyGoals", dailyGoals);
             request.setAttribute("quizAccuracy", quizAccuracy);
             request.setAttribute("dailyStreak", dailyStreak);
+            // Update all achievements
+            Achievements achievementsManager = new Achievements();
+            achievementsManager.updateAllAchievements(userId);
+            java.util.Map<String, Boolean> achievements = achievementsManager.getAchievementsForUser(userId);
+            request.setAttribute("achievements", achievements);
         }
         request.getRequestDispatcher("/Home.jsp").forward(request, response);
     }

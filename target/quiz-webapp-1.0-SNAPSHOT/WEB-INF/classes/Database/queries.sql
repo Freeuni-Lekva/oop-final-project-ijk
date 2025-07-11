@@ -64,3 +64,12 @@ CREATE TABLE UserPoints (
     user_id BIGINT UNSIGNED,
     points BIGINT
 );
+
+DROP TABLE IF EXISTS Achievements;
+CREATE TABLE Achievements (
+    user_id BIGINT UNSIGNED,
+    FAST_LEARNER BOOLEAN,
+    ON_FIRE BOOLEAN,
+    GENIUS BOOLEAN,
+    CHAMPION BOOLEAN
+);
