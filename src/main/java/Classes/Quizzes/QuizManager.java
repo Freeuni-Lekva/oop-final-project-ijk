@@ -242,6 +242,34 @@ public class QuizManager {
         return attempts;
     }
 
+    // Returns today's quiz attempts for a user
+    public List<QuizAttempt> getTodayQuizAttemptsForUser(int userId) {
+        List<QuizAttempt> attempts = new ArrayList<>();
+        String sql = "SELECT * FROM QuizAttempts WHERE user_id = ? AND DATE(taken_at) = CURDATE() ORDER BY taken_at DESC";
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, userId);
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    while (rs.next()) {
+                        QuizAttempt a = new QuizAttempt();
+                        a.id = rs.getInt("id");
+                        a.userId = rs.getInt("user_id");
+                        a.quizId = rs.getInt("quiz_id");
+                        a.score = rs.getDouble("score");
+                        a.takenAt = rs.getTimestamp("taken_at");
+                        a.durationSeconds = rs.getInt("duration_seconds");
+                        attempts.add(a);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return attempts;
+    }
+
     public int getUserPoints(int userId) {
         String sql = "SELECT points FROM UserPoints WHERE user_id = ?";
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
@@ -317,11 +345,11 @@ public class QuizManager {
         return count;
     }
 
-    // Returns the user's quiz accuracy as a percent (0-100)
+    // Returns the user's quiz accuracy as a percent (0-100) for today only
     public int getQuizAccuracy(int userId) {
         int totalCorrect = 0;
         int totalQuestions = 0;
-        List<QuizAttempt> attempts = getQuizAttemptsForUser(userId);
+        List<QuizAttempt> attempts = getTodayQuizAttemptsForUser(userId);
         for (QuizAttempt attempt : attempts) {
             int quizId = attempt.quizId;
             int numQuestions = getQuestionCountForQuiz(quizId);
@@ -350,10 +378,10 @@ public class QuizManager {
         return streak;
     }
 
-    // Returns the sum of the user's max points from each quiz (with difficulty multiplier)
+    // Returns the sum of the user's max points from each quiz for today only
     public int getUserMaxPointsSum(int userId) {
         Map<Integer, Double> bestScoreByQuiz = new HashMap<>();
-        List<QuizAttempt> attempts = getQuizAttemptsForUser(userId);
+        List<QuizAttempt> attempts = getTodayQuizAttemptsForUser(userId);
         for (QuizAttempt attempt : attempts) {
             int quizId = attempt.quizId;
             double score = attempt.score;

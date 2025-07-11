@@ -66,12 +66,11 @@
 <header class="bg-white shadow-sm">
     <div class="container mx-auto px-4 py-4 flex items-center justify-between">
         <div class="flex items-center">
-            <img href="/Home.jsp" src="./images/Logo1.png" alt="Logo" style="height: 38px; margin-right: 20px">
+            <img href="home" src="./images/Logo1.png" alt="Logo" style="height: 38px; margin-right: 20px">
             <nav class="hidden md:flex space-x-6">
-                <a href="./Home.jsp" class="text-primary font-medium">Home</a>
+                <a href="home" class="text-primary font-medium">Home</a>
                 <a href="quizzes" class="text-gray-600 hover:text-primary transition-colors">Quizzes</a>
-                <a href="#" class="text-gray-600 hover:text-primary transition-colors">Leaderboard</a>
-                <a href="#" class="text-gray-600 hover:text-primary transition-colors">Achievements</a>
+                <a href="leaderboard" class="text-gray-600 hover:text-primary transition-colors">Leaderboard</a>
             </nav>
         </div>
         <div class="flex items-center space-x-4">
@@ -223,7 +222,9 @@
                         </div>
                         <div class="progress-bar">
                             <% int dailyStreakWidth = (int)Math.round(100.0 * (request.getAttribute("dailyStreak") != null ? (Integer)request.getAttribute("dailyStreak") : 0) / 7); %>
-                            <div class="progress-fill" style="width: <%= dailyStreakWidth %>%;"></div>
+                            <% int dailyPoints = (request.getAttribute("userMaxPointsSum") != null ? (Integer)request.getAttribute("userMaxPointsSum") : 0); %>
+                            <% int dailyPointsWidth = Math.min(100, (int)Math.round(100.0 * dailyPoints / 100)); %>
+                            <div class="progress-fill" style="width: <%= dailyPointsWidth %>%;"></div>
                         </div>
                     </div>
                 </div>
