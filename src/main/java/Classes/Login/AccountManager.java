@@ -117,4 +117,21 @@ public class AccountManager {
         }
         return null;
     }
+
+    public int getUserIdByUsername(String username) {
+        String sql = "SELECT id FROM Users WHERE username = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Database error in getUserIdByUsername: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }

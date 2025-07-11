@@ -37,7 +37,7 @@
                     <div class="meta-item"><i class="ri-award-line"></i><span><%= difficultyLabel %> Level</span></div>
                 </div>
             </div>
-            <a href="Quiz.jsp" class="btn btn-primary">
+            <a href="start-quiz?id=<%= ((request.getAttribute("quiz") != null) ? ((Classes.Quizzes.QuizManager.Quiz)request.getAttribute("quiz")).id : "") %>" class="btn btn-primary">
                 <span>Start Quiz</span>
                 <i class="ri-arrow-right-line"></i>
             </a>
