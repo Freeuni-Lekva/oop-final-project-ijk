@@ -238,6 +238,7 @@
                 <div class="space-y-4">
                     <% java.util.List recentAttempts = (java.util.List) request.getAttribute("recentAttempts"); %>
                     <% java.util.List quizzes = (java.util.List) request.getAttribute("quizzes"); %>
+                    <% java.util.Map questionCounts = (java.util.Map) request.getAttribute("questionCounts"); %>
                     <% if (recentAttempts != null && !recentAttempts.isEmpty()) {
                         for (Object obj : recentAttempts) {
                             Classes.Quizzes.QuizManager.QuizAttempt attempt = (Classes.Quizzes.QuizManager.QuizAttempt) obj;
@@ -248,6 +249,7 @@
                                 if (quiz.id == attempt.quizId) { quizName = quiz.name; difficulty = quiz.difficulty; break; }
                             }
                             int percent = (int)Math.round(attempt.score);
+                            int realPercent = (int)Math.round((attempt.score / (questionCounts.get(attempt.quizId) instanceof Integer ? (Integer)questionCounts.get(attempt.quizId) : 1)) * 100);
                             java.util.Date now = new java.util.Date();
                             long diffMillis = now.getTime() - attempt.takenAt.getTime();
                             long diffHours = diffMillis / (1000 * 60 * 60);
@@ -273,7 +275,7 @@
                         </div>
                         <div class="flex-grow">
                             <p class="text-sm font-medium text-gray-900">Completed <%= quizName %></p>
-                            <p class="text-xs text-gray-500">Score: <%= percent %>% • <%= timeAgo %></p>
+                            <p class="text-xs text-gray-500">Score: <%= realPercent %>% • <%= timeAgo %></p>
                         </div>
                         <div class="text-sm font-medium <%= xpClass %>">+<%= xp %> Pts</div>
                     </div>
@@ -555,6 +557,7 @@
         <div class="space-y-4">
             <% java.util.List allAttempts = (java.util.List) request.getAttribute("allAttempts"); %>
             <% java.util.List quizzesAll = (java.util.List) request.getAttribute("quizzes"); %>
+            <% java.util.Map questionCountsAll = (java.util.Map) request.getAttribute("questionCounts"); %>
             <% if (allAttempts != null && !allAttempts.isEmpty()) {
                 for (Object obj : allAttempts) {
                     Classes.Quizzes.QuizManager.QuizAttempt attempt = (Classes.Quizzes.QuizManager.QuizAttempt) obj;
@@ -565,6 +568,7 @@
                         if (quiz.id == attempt.quizId) { quizName = quiz.name; difficulty = quiz.difficulty; break; }
                     }
                     int percent = (int)Math.round(attempt.score);
+                    int realPercent = (int)Math.round((attempt.score / (questionCountsAll.get(attempt.quizId) instanceof Integer ? (Integer)questionCountsAll.get(attempt.quizId) : 1)) * 100);
                     java.util.Date now = new java.util.Date();
                     long diffMillis = now.getTime() - attempt.takenAt.getTime();
                     long diffHours = diffMillis / (1000 * 60 * 60);
@@ -590,9 +594,9 @@
                 </div>
                 <div class="flex-grow">
                     <p class="text-sm font-medium text-gray-900">Completed <%= quizName %></p>
-                    <p class="text-xs text-gray-500">Score: <%= percent %>% • <%= timeAgo %></p>
+                    <p class="text-xs text-gray-500">Score: <%= realPercent %>% • <%= timeAgo %></p>
                 </div>
-                <div class="text-sm font-medium <%= xpClass %>">+<%= xp %> XP</div>
+                <div class="text-sm font-medium <%= xpClass %>">+<%= xp %> Pts</div>
             </div>
             <%   }
                } else { %>

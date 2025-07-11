@@ -55,6 +55,11 @@ public class LoginServlet extends HttpServlet {
                 QuizManager manager = new QuizManager();
                 List<Quiz> quizzes = manager.getAllQuizzes();
                 request.setAttribute("quizzes", quizzes);
+                java.util.Map<Integer, Integer> questionCounts = new java.util.HashMap<>();
+                for (Quiz q : quizzes) {
+                    questionCounts.put(q.id, manager.getQuestionCountForQuiz(q.id));
+                }
+                request.setAttribute("questionCounts", questionCounts);
                 List<QuizAttempt> recentAttempts = null;
                 List<QuizAttempt> allAttempts = null;
                 if (userId != -1) {
