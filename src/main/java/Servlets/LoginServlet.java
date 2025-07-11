@@ -56,11 +56,14 @@ public class LoginServlet extends HttpServlet {
                 List<Quiz> quizzes = manager.getAllQuizzes();
                 request.setAttribute("quizzes", quizzes);
                 List<QuizAttempt> recentAttempts = null;
+                List<QuizAttempt> allAttempts = null;
                 if (userId != -1) {
-                    List<QuizAttempt> allAttempts = manager.getQuizAttemptsForUser(userId);
+                    List<QuizAttempt> allFetchedAttempts = manager.getQuizAttemptsForUser(userId);
+                    allAttempts = allFetchedAttempts;
                     recentAttempts = allAttempts.size() > 3 ? allAttempts.subList(0, 3) : allAttempts;
                 }
                 request.setAttribute("recentAttempts", recentAttempts);
+                request.setAttribute("allAttempts", allAttempts);
                 request.getRequestDispatcher("/Home.jsp").forward(request, response);
                 break;
             case USER_NOT_FOUND:
