@@ -60,7 +60,7 @@
             <nav class="hidden md:flex space-x-6">
                 <a href="home" class="text-gray-600 hover:text-primary transition-colors">Home</a>
                 <a href="quizzes" class="text-primary font-medium">Quizzes</a>
-                <a href="#" class="text-gray-600 hover:text-primary transition-colors">Leaderboard</a>
+                <a href="leaderboard" class="text-gray-600 hover:text-primary transition-colors">Leaderboard</a>
                 <a href="#" class="text-gray-600 hover:text-primary transition-colors">Achievements</a>
             </nav>
         </div>
