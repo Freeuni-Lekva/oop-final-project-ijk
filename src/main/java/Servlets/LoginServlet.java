@@ -7,6 +7,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import Classes.Login.AccountManager;
+import Classes.Quizzes.QuizManager;
+import Classes.Quizzes.QuizManager.Quiz;
+import Classes.Quizzes.QuizManager.QuizAttempt;
+import java.util.List;
 
 import java.io.IOException;
 
@@ -47,7 +51,25 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("requestNotification", requestNotification);
                 int userId = accountManager.getUserIdByUsername(username);
                 session.setAttribute("userId", userId);
-                response.sendRedirect("Home.jsp"); // Redirect to home page
+                // Fetch quizzes and recent attempts for activity
+                QuizManager manager = new QuizManager();
+                List<Quiz> quizzes = manager.getAllQuizzes();
+                request.setAttribute("quizzes", quizzes);
+                java.util.Map<Integer, Integer> questionCounts = new java.util.HashMap<>();
+                for (Quiz q : quizzes) {
+                    questionCounts.put(q.id, manager.getQuestionCountForQuiz(q.id));
+                }
+                request.setAttribute("questionCounts", questionCounts);
+                List<QuizAttempt> recentAttempts = null;
+                List<QuizAttempt> allAttempts = null;
+                if (userId != -1) {
+                    List<QuizAttempt> allFetchedAttempts = manager.getQuizAttemptsForUser(userId);
+                    allAttempts = allFetchedAttempts;
+                    recentAttempts = allAttempts.size() > 3 ? allAttempts.subList(0, 3) : allAttempts;
+                }
+                request.setAttribute("recentAttempts", recentAttempts);
+                request.setAttribute("allAttempts", allAttempts);
+                request.getRequestDispatcher("/Home.jsp").forward(request, response);
                 break;
             case USER_NOT_FOUND:
                 // Username does not exist, redirect with a specific error.
