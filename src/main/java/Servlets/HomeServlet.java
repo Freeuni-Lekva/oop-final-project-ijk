@@ -11,6 +11,7 @@ import Classes.Quizzes.QuizManager;
 import Classes.Quizzes.QuizManager.Quiz;
 import Classes.Quizzes.QuizManager.QuizAttempt;
 import java.util.List;
+import Classes.Leaderboard.LeaderboardManager;
 
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
@@ -39,6 +40,24 @@ public class HomeServlet extends HttpServlet {
         }
         request.setAttribute("recentAttempts", recentAttempts);
         request.setAttribute("allAttempts", allAttempts);
+        LeaderboardManager leaderboardManager = new LeaderboardManager();
+        List<LeaderboardManager.UserPointsEntry> leaderboard = leaderboardManager.getTopUsersByPoints(10);
+        request.setAttribute("leaderboard", leaderboard);
+        if (session.getAttribute("userId") != null) {
+            int userId = (Integer) session.getAttribute("userId");
+            int userRank = leaderboardManager.getUserRank(userId);
+            int userPoints = manager.getUserPoints(userId);
+            int dailyGoals = manager.getDailyGoalsCompleted(userId);
+            int quizAccuracy = manager.getQuizAccuracy(userId);
+            int dailyStreak = manager.getDailyPointsStreak(userId);
+            int userMaxPointsSum = manager.getUserMaxPointsSum(userId);
+            request.setAttribute("userMaxPointsSum", userMaxPointsSum);
+            request.setAttribute("userRank", userRank);
+            request.setAttribute("userPoints", userPoints);
+            request.setAttribute("dailyGoals", dailyGoals);
+            request.setAttribute("quizAccuracy", quizAccuracy);
+            request.setAttribute("dailyStreak", dailyStreak);
+        }
         request.getRequestDispatcher("/Home.jsp").forward(request, response);
     }
 } 

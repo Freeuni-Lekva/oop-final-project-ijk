@@ -13,6 +13,7 @@ import Classes.Quizzes.QuizManager.QuizAttempt;
 import java.util.List;
 
 import java.io.IOException;
+import Classes.Leaderboard.LeaderboardManager;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -53,6 +54,11 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("userId", userId);
                 // Fetch quizzes and recent attempts for activity
                 QuizManager manager = new QuizManager();
+                // Recalculate and update user points on login
+                manager.recalculateAndUpdateUserPoints(userId);
+                int userPoints = manager.getUserPoints(userId);
+                session.setAttribute("userPoints", userPoints);
+                request.setAttribute("userPoints", userPoints);
                 List<Quiz> quizzes = manager.getAllQuizzes();
                 request.setAttribute("quizzes", quizzes);
                 java.util.Map<Integer, Integer> questionCounts = new java.util.HashMap<>();
@@ -69,6 +75,20 @@ public class LoginServlet extends HttpServlet {
                 }
                 request.setAttribute("recentAttempts", recentAttempts);
                 request.setAttribute("allAttempts", allAttempts);
+                LeaderboardManager leaderboardManager = new LeaderboardManager();
+                List<LeaderboardManager.UserPointsEntry> leaderboard = leaderboardManager.getTopUsersByPoints(10);
+                request.setAttribute("leaderboard", leaderboard);
+                int userRank = leaderboardManager.getUserRank(userId);
+                request.setAttribute("userRank", userRank);
+                // userPoints is already set above
+                int dailyGoals = manager.getDailyGoalsCompleted(userId);
+                int quizAccuracy = manager.getQuizAccuracy(userId);
+                int dailyStreak = manager.getDailyPointsStreak(userId);
+                request.setAttribute("dailyGoals", dailyGoals);
+                request.setAttribute("quizAccuracy", quizAccuracy);
+                request.setAttribute("dailyStreak", dailyStreak);
+                int userMaxPointsSum = manager.getUserMaxPointsSum(userId);
+                request.setAttribute("userMaxPointsSum", userMaxPointsSum);
                 request.getRequestDispatcher("/Home.jsp").forward(request, response);
                 break;
             case USER_NOT_FOUND:
