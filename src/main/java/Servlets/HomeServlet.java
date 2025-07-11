@@ -7,6 +7,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import Classes.Quizzes.QuizManager;
+import Classes.Quizzes.QuizManager.Quiz;
+import Classes.Quizzes.QuizManager.QuizAttempt;
+import java.util.List;
 
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
@@ -17,6 +21,16 @@ public class HomeServlet extends HttpServlet {
             response.sendRedirect("LogIn.jsp");
             return;
         }
+        QuizManager manager = new QuizManager();
+        List<Quiz> quizzes = manager.getAllQuizzes();
+        request.setAttribute("quizzes", quizzes);
+        List<QuizAttempt> recentAttempts = null;
+        if (session.getAttribute("userId") != null) {
+            int userId = (Integer) session.getAttribute("userId");
+            List<QuizAttempt> allAttempts = manager.getQuizAttemptsForUser(userId);
+            recentAttempts = allAttempts.size() > 3 ? allAttempts.subList(0, 3) : allAttempts;
+        }
+        request.setAttribute("recentAttempts", recentAttempts);
         request.getRequestDispatcher("/Home.jsp").forward(request, response);
     }
 } 

@@ -236,36 +236,51 @@
                     <button class="text-sm text-primary hover:text-primary/80 transition-colors">View All</button>
                 </div>
                 <div class="space-y-4">
+                    <% java.util.List recentAttempts = (java.util.List) request.getAttribute("recentAttempts"); %>
+                    <% java.util.List quizzes = (java.util.List) request.getAttribute("quizzes"); %>
+                    <% if (recentAttempts != null && !recentAttempts.isEmpty()) {
+                        for (Object obj : recentAttempts) {
+                            Classes.Quizzes.QuizManager.QuizAttempt attempt = (Classes.Quizzes.QuizManager.QuizAttempt) obj;
+                            String quizName = "Quiz #" + attempt.quizId;
+                            int difficulty = 1;
+                            for (Object qObj : quizzes) {
+                                Classes.Quizzes.QuizManager.Quiz quiz = (Classes.Quizzes.QuizManager.Quiz) qObj;
+                                if (quiz.id == attempt.quizId) { quizName = quiz.name; difficulty = quiz.difficulty; break; }
+                            }
+                            int percent = (int)Math.round(attempt.score);
+                            java.util.Date now = new java.util.Date();
+                            long diffMillis = now.getTime() - attempt.takenAt.getTime();
+                            long diffHours = diffMillis / (1000 * 60 * 60);
+                            long diffDays = diffHours / 24;
+                            String timeAgo;
+                            if (diffHours < 24) {
+                                timeAgo = diffHours + (diffHours == 1 ? " hour ago" : " hours ago");
+                            } else if (diffDays < 7) {
+                                timeAgo = diffDays + (diffDays == 1 ? " day ago" : " days ago");
+                            } else {
+                                long weeks = diffDays / 7;
+                                timeAgo = weeks + (weeks == 1 ? " week ago" : " weeks ago");
+                            }
+                            int xp = percent;
+                            if (difficulty == 2) xp = percent * 2;
+                            if (difficulty == 3) xp = percent * 3;
+                            String xpClass = difficulty == 1 ? "text-primary" : (difficulty == 2 ? "text-secondary" : "text-accent");
+                            String bgClass = difficulty == 1 ? "bg-primary/10 text-primary" : (difficulty == 2 ? "bg-secondary/10 text-secondary" : "bg-accent/10 text-accent");
+                    %>
                     <div class="flex items-center">
-                        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-3">
+                        <div class="w-10 h-10 rounded-full <%= bgClass %> flex items-center justify-center mr-3">
                             <i class="ri-trophy-line"></i>
                         </div>
                         <div class="flex-grow">
-                            <p class="text-sm font-medium text-gray-900">Completed Science Quiz</p>
-                            <p class="text-xs text-gray-500">Score: 95% • 2 hours ago</p>
+                            <p class="text-sm font-medium text-gray-900">Completed <%= quizName %></p>
+                            <p class="text-xs text-gray-500">Score: <%= percent %>% • <%= timeAgo %></p>
                         </div>
-                        <div class="text-sm font-medium text-primary">+150 XP</div>
+                        <div class="text-sm font-medium <%= xpClass %>">+<%= xp %> Pts</div>
                     </div>
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mr-3">
-                            <i class="ri-medal-line"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <p class="text-sm font-medium text-gray-900">New Achievement Unlocked</p>
-                            <p class="text-xs text-gray-500">Speed Demon • 5 hours ago</p>
-                        </div>
-                        <div class="text-sm font-medium text-secondary">+200 XP</div>
-                    </div>
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent mr-3">
-                            <i class="ri-flag-line"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <p class="text-sm font-medium text-gray-900">Daily Challenge Completed</p>
-                            <p class="text-xs text-gray-500">Perfect Score • Yesterday</p>
-                        </div>
-                        <div class="text-sm font-medium text-accent">+100 XP</div>
-                    </div>
+                    <%   }
+                       } else { %>
+                    <div class="text-gray-400 text-sm">No recent activity.</div>
+                    <% } %>
                 </div>
             </div>
         </div>

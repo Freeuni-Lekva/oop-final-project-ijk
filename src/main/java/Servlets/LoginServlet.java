@@ -7,6 +7,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import Classes.Login.AccountManager;
+import Classes.Quizzes.QuizManager;
+import Classes.Quizzes.QuizManager.Quiz;
+import Classes.Quizzes.QuizManager.QuizAttempt;
+import java.util.List;
 
 import java.io.IOException;
 
@@ -47,7 +51,17 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("requestNotification", requestNotification);
                 int userId = accountManager.getUserIdByUsername(username);
                 session.setAttribute("userId", userId);
-                response.sendRedirect("Home.jsp"); // Redirect to home page
+                // Fetch quizzes and recent attempts for activity
+                QuizManager manager = new QuizManager();
+                List<Quiz> quizzes = manager.getAllQuizzes();
+                request.setAttribute("quizzes", quizzes);
+                List<QuizAttempt> recentAttempts = null;
+                if (userId != -1) {
+                    List<QuizAttempt> allAttempts = manager.getQuizAttemptsForUser(userId);
+                    recentAttempts = allAttempts.size() > 3 ? allAttempts.subList(0, 3) : allAttempts;
+                }
+                request.setAttribute("recentAttempts", recentAttempts);
+                request.getRequestDispatcher("/Home.jsp").forward(request, response);
                 break;
             case USER_NOT_FOUND:
                 // Username does not exist, redirect with a specific error.

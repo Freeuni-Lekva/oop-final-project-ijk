@@ -58,3 +58,9 @@ CREATE TABLE QuizAttempts (
     FOREIGN KEY (user_id) REFERENCES Users(id),
     FOREIGN KEY (quiz_id) REFERENCES Quizzes(id)
 );
+
+DROP TABLE IF EXISTS UserPoints;
+CREATE TABLE UserPoints (
+    user_id BIGINT UNSIGNED,
+    points BIGINT
+);
