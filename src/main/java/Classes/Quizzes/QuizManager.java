@@ -241,4 +241,157 @@ public class QuizManager {
         }
         return attempts;
     }
+
+    public int getUserPoints(int userId) {
+        String sql = "SELECT points FROM UserPoints WHERE user_id = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("points");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public boolean insertUserPoints(int userId, int points) {
+        String sql = "INSERT INTO UserPoints (user_id, points) VALUES (?, ?)";
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, points);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateUserPoints(int userId, int points) {
+        String sql = "UPDATE UserPoints SET points = ? WHERE user_id = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, points);
+            pstmt.setInt(2, userId);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public void recalculateAndUpdateUserPoints(int userId) {
+        // Map from quizId to best raw score
+        Map<Integer, Double> bestScoreByQuiz = new HashMap<>();
+        List<QuizAttempt> attempts = getQuizAttemptsForUser(userId);
+        for (QuizAttempt attempt : attempts) {
+            int quizId = attempt.quizId;
+            double score = attempt.score;
+            if (!bestScoreByQuiz.containsKey(quizId) || score > bestScoreByQuiz.get(quizId)) {
+                bestScoreByQuiz.put(quizId, score);
+            }
+        }
+        // Sum the best raw scores for all quizzes, applying difficulty multiplier
+        int totalPoints = 0;
+        for (Map.Entry<Integer, Double> entry : bestScoreByQuiz.entrySet()) {
+            int quizId = entry.getKey();
+            double score = entry.getValue();
+            Quiz quiz = getQuizById(quizId);
+            int multiplier = 1;
+            if (quiz != null) {
+                if (quiz.difficulty == 2) multiplier = 2;
+                else if (quiz.difficulty == 3) multiplier = 3;
+            }
+            totalPoints += (int)Math.round(score * multiplier);
+        }
+        // Update or insert UserPoints
+        if (getUserPoints(userId) == 0) {
+            insertUserPoints(userId, totalPoints);
+        } else {
+            updateUserPoints(userId, totalPoints);
+        }
+    }
+
+    // Returns the number of quizzes completed today by the user
+    public int getDailyGoalsCompleted(int userId) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM QuizAttempts WHERE user_id = ? AND DATE(taken_at) = CURDATE()";
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    count = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    // Returns the user's quiz accuracy as a percent (0-100)
+    public int getQuizAccuracy(int userId) {
+        int totalCorrect = 0;
+        int totalQuestions = 0;
+        List<QuizAttempt> attempts = getQuizAttemptsForUser(userId);
+        for (QuizAttempt attempt : attempts) {
+            int quizId = attempt.quizId;
+            int numQuestions = getQuestionCountForQuiz(quizId);
+            totalCorrect += (int)Math.round(attempt.score);
+            totalQuestions += numQuestions;
+        }
+        if (totalQuestions == 0) return 0;
+        return (int)Math.round(100.0 * totalCorrect / totalQuestions);
+    }
+
+    // Returns the number of days in the last 7 where the user earned points (completed at least one quiz)
+    public int getDailyPointsStreak(int userId) {
+        int streak = 0;
+        String sql = "SELECT DATE(taken_at) as day, COUNT(*) FROM QuizAttempts WHERE user_id = ? AND taken_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY) GROUP BY day";
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    streak++;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return streak;
+    }
+
+    // Returns the sum of the user's max points from each quiz (with difficulty multiplier)
+    public int getUserMaxPointsSum(int userId) {
+        Map<Integer, Double> bestScoreByQuiz = new HashMap<>();
+        List<QuizAttempt> attempts = getQuizAttemptsForUser(userId);
+        for (QuizAttempt attempt : attempts) {
+            int quizId = attempt.quizId;
+            double score = attempt.score;
+            if (!bestScoreByQuiz.containsKey(quizId) || score > bestScoreByQuiz.get(quizId)) {
+                bestScoreByQuiz.put(quizId, score);
+            }
+        }
+        int totalPoints = 0;
+        for (Map.Entry<Integer, Double> entry : bestScoreByQuiz.entrySet()) {
+            int quizId = entry.getKey();
+            double score = entry.getValue();
+            Quiz quiz = getQuizById(quizId);
+            int multiplier = 1;
+            if (quiz != null) {
+                if (quiz.difficulty == 2) multiplier = 2;
+                else if (quiz.difficulty == 3) multiplier = 3;
+            }
+            totalPoints += (int)Math.round(score * multiplier);
+        }
+        return totalPoints;
+    }
 }

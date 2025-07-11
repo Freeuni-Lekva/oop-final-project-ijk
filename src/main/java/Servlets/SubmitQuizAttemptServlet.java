@@ -40,6 +40,8 @@ public class SubmitQuizAttemptServlet extends HttpServlet {
         int percent = extractInt(json, "percent");
         QuizManager manager = new QuizManager();
         manager.insertQuizAttempt(userId, quizId, score, 0);
+        // Recalculate and update user points after this attempt
+        manager.recalculateAndUpdateUserPoints(userId);
         response.setStatus(HttpServletResponse.SC_OK);
     }
 

@@ -1,3 +1,4 @@
+<%@ page import="java.util.List" %>
 <%--
   Created by IntelliJ IDEA.
   User: admin
@@ -198,28 +199,31 @@
                     <div>
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-sm font-medium text-gray-700">Daily Goals</span>
-                            <span class="text-sm text-gray-500">8/10 completed</span>
+                            <span class="text-sm text-gray-500"><%= request.getAttribute("dailyGoals") != null ? request.getAttribute("dailyGoals") : 0 %>/5 completed</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 80%"></div>
+                            <% int dailyGoalsWidth = (int)Math.round(100.0 * (request.getAttribute("dailyGoals") != null ? (Integer)request.getAttribute("dailyGoals") : 0) / 5); %>
+                            <div class="progress-fill" style="width: <%= dailyGoalsWidth %>%;"></div>
                         </div>
                     </div>
                     <div>
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-sm font-medium text-gray-700">Quiz Accuracy</span>
-                            <span class="text-sm text-gray-500">85%</span>
+                            <span class="text-sm text-gray-500"><%= request.getAttribute("quizAccuracy") != null ? request.getAttribute("quizAccuracy") : 0 %>%</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 85%"></div>
+                            <% int quizAccuracyWidth = (request.getAttribute("quizAccuracy") != null ? (Integer)request.getAttribute("quizAccuracy") : 0); %>
+                            <div class="progress-fill" style="width: <%= quizAccuracyWidth %>%;"></div>
                         </div>
                     </div>
                     <div>
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-sm font-medium text-gray-700">Daily Points</span>
-                            <span class="text-sm text-gray-500">4/7 days</span>
+                            <span class="text-sm text-gray-500"><%= request.getAttribute("userMaxPointsSum") != null ? request.getAttribute("userMaxPointsSum") : 0 %> Pts</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" style="width: 57%"></div>
+                            <% int dailyStreakWidth = (int)Math.round(100.0 * (request.getAttribute("dailyStreak") != null ? (Integer)request.getAttribute("dailyStreak") : 0) / 7); %>
+                            <div class="progress-fill" style="width: <%= dailyStreakWidth %>%;"></div>
                         </div>
                     </div>
                 </div>
@@ -343,125 +347,75 @@
                     </div>
                     Top Performers
                 </h2>
-                <div class="flex space-x-2">
-                    <button class="px-3 py-1 text-sm font-medium rounded-full bg-primary text-white">Weekly</button>
-                    <button class="px-3 py-1 text-sm font-medium rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200">Monthly</button>
-                    <button class="px-3 py-1 text-sm font-medium rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200">All Time</button>
-                </div>
             </div>
             <div class="overflow-hidden">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Top 3 Players -->
+                    <%-- Top 3 Players --%>
+                    <% 
+                        List leaderboard = (List) request.getAttribute("leaderboard");
+                        Integer currentUserId = (Integer) session.getAttribute("userId");
+                        int[] colors = {0xFFD700, 0xC0C0C0, 0xCD7F32};
+                        for (int i = 0; i < Math.min(3, leaderboard.size()); i++) {
+                            Classes.Leaderboard.LeaderboardManager.UserPointsEntry entry = (Classes.Leaderboard.LeaderboardManager.UserPointsEntry) leaderboard.get(i);
+                    %>
                     <div class="flex items-center justify-between space-x-4">
                         <div class="flex-1 flex items-center space-x-4">
                             <div class="relative">
-                                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-[#FFD700] to-[#FFA500] flex items-center justify-center text-white text-xl font-bold">1</div>
+                                <div class="w-16 h-16 rounded-full <%= i==0?"bg-gradient-to-br from-[#FFD700] to-[#FFA500]":(i==1?"bg-gradient-to-br from-[#C0C0C0] to-[#A0A0A0]":"bg-gradient-to-br from-[#CD7F32] to-[#B87333]") %> flex items-center justify-center text-white text-xl font-bold"><%= (i+1) %></div>
+                                <% if (i == 0) { %>
                                 <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white">
                                     <i class="ri-crown-fill ri-sm"></i>
                                 </div>
+                                <% } %>
                             </div>
                             <div>
-                                <h3 class="font-semibold text-gray-900">Sarah Anderson</h3>
-                                <p class="text-sm text-gray-500">98,750 points</p>
-                                <div class="flex items-center mt-1">
-                                    <div class="text-xs font-medium text-primary">+1,250 this week</div>
-                                    <div class="w-4 h-4 flex items-center justify-center text-primary ml-1">
-                                        <i class="ri-arrow-up-line ri-sm"></i>
-                                    </div>
-                                </div>
+                                <h3 class="font-semibold text-gray-900"><%= entry.username %></h3>
+                                <p class="text-sm text-gray-500"><%= entry.points %> points</p>
                             </div>
                         </div>
                         <div class="w-24 h-2 bg-gray-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-[#FFD700] rounded-full" style="width: 98%"></div>
+                            <div class="h-full <%= i==0?"bg-[#FFD700]":(i==1?"bg-[#C0C0C0]":"bg-[#CD7F32]") %> rounded-full" style="width: <%= Math.min(100, entry.points) %>%"></div>
                         </div>
                     </div>
-                    <div class="flex items-center justify-between space-x-4">
-                        <div class="flex-1 flex items-center space-x-4">
-                            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-[#C0C0C0] to-[#A0A0A0] flex items-center justify-center text-white text-xl font-bold">2</div>
-                            <div>
-                                <h3 class="font-semibold text-gray-900">Michael Chen</h3>
-                                <p class="text-sm text-gray-500">95,200 points</p>
-                                <div class="flex items-center mt-1">
-                                    <div class="text-xs font-medium text-primary">+980 this week</div>
-                                    <div class="w-4 h-4 flex items-center justify-center text-primary ml-1">
-                                        <i class="ri-arrow-up-line ri-sm"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-24 h-2 bg-gray-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-[#C0C0C0] rounded-full" style="width: 95%"></div>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between space-x-4">
-                        <div class="flex-1 flex items-center space-x-4">
-                            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-[#CD7F32] to-[#B87333] flex items-center justify-center text-white text-xl font-bold">3</div>
-                            <div>
-                                <h3 class="font-semibold text-gray-900">Emma Thompson</h3>
-                                <p class="text-sm text-gray-500">92,800 points</p>
-                                <div class="flex items-center mt-1">
-                                    <div class="text-xs font-medium text-primary">+850 this week</div>
-                                    <div class="w-4 h-4 flex items-center justify-center text-primary ml-1">
-                                        <i class="ri-arrow-up-line ri-sm"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-24 h-2 bg-gray-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-[#CD7F32] rounded-full" style="width: 92%"></div>
-                        </div>
-                    </div>
+                    <% } %>
                 </div>
-                <!-- Other Players -->
+                <%-- Other Players --%>
                 <div class="mt-6 space-y-4">
-                    <div class="flex items-center justify-between py-3 border-t border-gray-100">
+                    <% for (int i = 3; i < leaderboard.size(); i++) {
+                        Classes.Leaderboard.LeaderboardManager.UserPointsEntry entry = (Classes.Leaderboard.LeaderboardManager.UserPointsEntry) leaderboard.get(i);
+                    %>
+                    <div class="flex items-center justify-between py-3 border-t border-gray-100 <%= (currentUserId != null && entry.userId == currentUserId) ? "bg-primary/10" : "" %>">
                         <div class="flex items-center space-x-4">
-                            <div class="w-8 h-8 flex items-center justify-center text-gray-500 font-medium">4</div>
+                            <div class="w-8 h-8 flex items-center justify-center <%= (currentUserId != null && entry.userId == currentUserId) ? "text-primary" : "text-gray-500" %> font-medium"><%= (i+1) %></div>
                             <div>
-                                <h3 class="font-medium text-gray-900">David Wilson</h3>
-                                <p class="text-sm text-gray-500">89,400 points</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <span class="text-sm text-gray-500">+720 pts</span>
-                            <div class="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                <div class="h-full bg-gray-300 rounded-full" style="width: 89%"></div>
+                                <h3 class="font-medium text-gray-900"><%= entry.username %></h3>
+                                <p class="text-sm text-gray-500"><%= entry.points %> points</p>
                             </div>
                         </div>
                     </div>
-                    <div class="flex items-center justify-between py-3 border-t border-gray-100">
+                    <% } %>
+                    <%-- Show 'You' row if user is not in top 10 --%>
+                    <% Integer userRank = (Integer) request.getAttribute("userRank");
+                       Integer userPoints = (Integer) request.getAttribute("userPoints");
+                       boolean inTop = false;
+                       if (currentUserId != null) {
+                           for (int i = 0; i < leaderboard.size(); i++) {
+                               Classes.Leaderboard.LeaderboardManager.UserPointsEntry entry = (Classes.Leaderboard.LeaderboardManager.UserPointsEntry) leaderboard.get(i);
+                               if (entry.userId == currentUserId) { inTop = true; break; }
+                           }
+                       }
+                       if (currentUserId != null && !inTop && userRank != null && userPoints != null) {
+                    %>
+                    <div class="flex items-center justify-between py-3 border-t border-gray-100 bg-primary/10">
                         <div class="flex items-center space-x-4">
-                            <div class="w-8 h-8 flex items-center justify-center text-gray-500 font-medium">5</div>
-                            <div>
-                                <h3 class="font-medium text-gray-900">Sophia Garcia</h3>
-                                <p class="text-sm text-gray-500">87,150 points</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <span class="text-sm text-gray-500">+650 pts</span>
-                            <div class="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                <div class="h-full bg-gray-300 rounded-full" style="width: 87%"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between py-3 border-t border-gray-100">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-8 h-8 flex items-center justify-center text-primary font-medium">12</div>
+                            <div class="w-8 h-8 flex items-center justify-center text-primary font-medium"><%= userRank %></div>
                             <div class="relative">
                                 <h3 class="font-medium text-gray-900">You</h3>
-                                <p class="text-sm text-gray-500">76,300 points</p>
-                                <div class="absolute -top-3 -right-3 w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center">
-                                    <i class="ri-arrow-up-line text-primary ri-sm"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <span class="text-sm text-gray-500">+480 pts</span>
-                            <div class="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                <div class="h-full bg-primary rounded-full" style="width: 76%"></div>
+                                <p class="text-sm text-gray-500"><%= userPoints %> points</p>
                             </div>
                         </div>
                     </div>
+                    <% } %>
                 </div>
             </div>
         </div>

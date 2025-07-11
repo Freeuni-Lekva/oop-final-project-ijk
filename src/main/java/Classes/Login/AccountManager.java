@@ -134,4 +134,51 @@ public class AccountManager {
         }
         return -1;
     }
+
+    public int getUserPoints(int userId) {
+        String sql = "SELECT points FROM UserPoints WHERE user_id = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("points");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Database error in getUserPoints: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public boolean insertUserPoints(int userId, int points) {
+        String sql = "INSERT INTO UserPoints (user_id, points) VALUES (?, ?)";
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, points);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.err.println("Database error in insertUserPoints: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateUserPoints(int userId, int points) {
+        String sql = "UPDATE UserPoints SET points = ? WHERE user_id = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, points);
+            pstmt.setInt(2, userId);
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            System.err.println("Database error in updateUserPoints: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
