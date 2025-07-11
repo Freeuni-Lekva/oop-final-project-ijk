@@ -14,6 +14,7 @@ import java.util.List;
 
 import java.io.IOException;
 import Classes.Leaderboard.LeaderboardManager;
+import Classes.Achievements.Achievements;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -89,6 +90,11 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("dailyStreak", dailyStreak);
                 int userMaxPointsSum = manager.getUserMaxPointsSum(userId);
                 request.setAttribute("userMaxPointsSum", userMaxPointsSum);
+                // Update ON_FIRE achievement
+                Achievements achievementsManager = new Achievements();
+                achievementsManager.updateAllAchievements(userId);
+                java.util.Map<String, Boolean> achievements = achievementsManager.getAchievementsForUser(userId);
+                request.setAttribute("achievements", achievements);
                 request.getRequestDispatcher("/Home.jsp").forward(request, response);
                 break;
             case USER_NOT_FOUND:
