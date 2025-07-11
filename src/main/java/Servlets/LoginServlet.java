@@ -45,6 +45,8 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("username", username);
                 Boolean requestNotification = accountManager.getRequestNotification(username);
                 session.setAttribute("requestNotification", requestNotification);
+                int userId = accountManager.getUserIdByUsername(username);
+                session.setAttribute("userId", userId);
                 response.sendRedirect("Home.jsp"); // Redirect to home page
                 break;
             case USER_NOT_FOUND:
