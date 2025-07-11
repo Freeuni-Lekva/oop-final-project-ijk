@@ -20,12 +20,21 @@
         <div class="card mb-8">
             <h2 class="card-title mb-4">Featured Quiz</h2>
             <div class="quiz-feature mb-6">
-                <h3 class="quiz-title mb-2">Quantum Physics Fundamentals</h3>
-                <p class="quiz-desc mb-4">Challenge yourself with 30 comprehensive questions covering the essential concepts of quantum physics</p>
+                <h3 class="quiz-title mb-2"><%= ((request.getAttribute("quiz") != null) ? ((Classes.Quizzes.QuizManager.Quiz)request.getAttribute("quiz")).name : "") %></h3>
+                <p class="quiz-desc mb-4"><%= ((request.getAttribute("quiz") != null) ? ((Classes.Quizzes.QuizManager.Quiz)request.getAttribute("quiz")).description : "") %></p>
                 <div class="quiz-meta">
-                    <div class="meta-item"><i class="ri-question-line"></i><span>30 Questions</span></div>
-                    <div class="meta-item"><i class="ri-time-line"></i><span>25 Minutes</span></div>
-                    <div class="meta-item"><i class="ri-award-line"></i><span>Advanced Level</span></div>
+                    <div class="meta-item"><i class="ri-question-line"></i><span><%= (request.getAttribute("questionCount") != null ? request.getAttribute("questionCount") : 0) %> Questions</span></div>
+                    <div class="meta-item"><i class="ri-time-line"></i><span><%= (request.getAttribute("quiz") != null ? ((Classes.Quizzes.QuizManager.Quiz)request.getAttribute("quiz")).duration : "") %> Minutes</span></div>
+                    <%
+                    String difficultyLabel = "";
+                    if (request.getAttribute("quiz") != null) {
+                        int diff = ((Classes.Quizzes.QuizManager.Quiz)request.getAttribute("quiz")).difficulty;
+                        if (diff == 1) difficultyLabel = "Easy";
+                        else if (diff == 2) difficultyLabel = "Medium";
+                        else if (diff == 3) difficultyLabel = "Hard";
+                    }
+                    %>
+                    <div class="meta-item"><i class="ri-award-line"></i><span><%= difficultyLabel %> Level</span></div>
                 </div>
             </div>
             <a href="Quiz.jsp" class="btn btn-primary">

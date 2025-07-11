@@ -197,7 +197,7 @@
     <!-- Quiz Categories Section -->
     <div class="mb-12">
         <h2 class="text-2xl font-bold text-gray-900 mb-6">
-            Popular Categories
+            Categories
         </h2>
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
             <div
@@ -208,8 +208,8 @@
                 >
                     <i class="ri-timer-line ri-xl"></i>
                 </div>
-                <h3 class="font-semibold text-gray-900 text-sm">Speed Challange</h3>
-                <p class="text-xs text-gray-500 mt-1">0 quizzes</p>
+                <h3 class="font-semibold text-gray-900 text-sm">Speed Challenge</h3>
+                <p class="text-xs text-gray-500 mt-1"><%= ((request.getAttribute("categoryCounts") != null && ((java.util.Map)request.getAttribute("categoryCounts")).get("Speed Challenge") != null) ? ((java.util.Map)request.getAttribute("categoryCounts")).get("Speed Challenge") : 0) %> quizzes</p>
             </div>
             <div
                     class="category-card bg-white rounded-lg p-4 text-center shadow-sm"
@@ -223,7 +223,7 @@
                     </svg>
                 </div>
                 <h3 class="font-semibold text-gray-900 text-sm">Random Quiz</h3>
-                <p class="text-xs text-gray-500 mt-1">0 quizzes</p>
+                <p class="text-xs text-gray-500 mt-1"><%= ((request.getAttribute("categoryCounts") != null && ((java.util.Map)request.getAttribute("categoryCounts")).get("Random Quiz") != null) ? ((java.util.Map)request.getAttribute("categoryCounts")).get("Random Quiz") : 0) %> quizzes</p>
             </div>
             <div
                     class="category-card bg-white rounded-lg p-4 text-center shadow-sm"
@@ -237,7 +237,7 @@
                     </svg>
                 </div>
                 <h3 class="font-semibold text-gray-900 text-sm">Fill in the Blank</h3>
-                <p class="text-xs text-gray-500 mt-1">0 quizzes</p>
+                <p class="text-xs text-gray-500 mt-1"><%= ((request.getAttribute("categoryCounts") != null && ((java.util.Map)request.getAttribute("categoryCounts")).get("Fill in the Blank") != null) ? ((java.util.Map)request.getAttribute("categoryCounts")).get("Fill in the Blank") : 0) %> quizzes</p>
             </div>
             <div
                     class="category-card bg-white rounded-lg p-4 text-center shadow-sm"
@@ -250,7 +250,7 @@
                     </svg>
                 </div>
                 <h3 class="font-semibold text-gray-900 text-sm">Multiple Choice</h3>
-                <p class="text-xs text-gray-500 mt-1">0 quizzes</p>
+                <p class="text-xs text-gray-500 mt-1"><%= ((request.getAttribute("categoryCounts") != null && ((java.util.Map)request.getAttribute("categoryCounts")).get("Multiple Choice") != null) ? ((java.util.Map)request.getAttribute("categoryCounts")).get("Multiple Choice") : 0) %> quizzes</p>
             </div>
             <div
                     class="category-card bg-white rounded-lg p-4 text-center shadow-sm"
@@ -264,7 +264,7 @@
                     </svg>
                 </div>
                 <h3 class="font-semibold text-gray-900 text-sm">Question-Response</h3>
-                <p class="text-xs text-gray-500 mt-1">0 quizzes</p>
+                <p class="text-xs text-gray-500 mt-1"><%= ((request.getAttribute("categoryCounts") != null && ((java.util.Map)request.getAttribute("categoryCounts")).get("Question-Response") != null) ? ((java.util.Map)request.getAttribute("categoryCounts")).get("Question-Response") : 0) %> quizzes</p>
             </div>
             <div
                     class="category-card bg-white rounded-lg p-4 text-center shadow-sm"
@@ -278,7 +278,7 @@
                     </svg>
                 </div>
                 <h3 class="font-semibold text-gray-900 text-sm">Picture-Response</h3>
-                <p class="text-xs text-gray-500 mt-1">0 quizzes</p>
+                <p class="text-xs text-gray-500 mt-1"><%= ((request.getAttribute("categoryCounts") != null && ((java.util.Map)request.getAttribute("categoryCounts")).get("Picture-Response") != null) ? ((java.util.Map)request.getAttribute("categoryCounts")).get("Picture-Response") : 0) %> quizzes</p>
             </div>
         </div>
     </div>
@@ -325,66 +325,27 @@
                 <div class="w-4 h-4 flex items-center justify-center mr-1">
                     <i class="ri-time-line"></i>
                 </div>
-                <span>15 min</span>
+                <span><%= quiz.duration %> min</span>
             </div>
             <div class="flex items-center">
                 <div class="w-4 h-4 flex items-center justify-center mr-1">
                     <i class="ri-question-line"></i>
                 </div>
-                <span>25 questions</span>
+                <span><%= (request.getAttribute("questionCounts") != null && ((java.util.Map)request.getAttribute("questionCounts")).get(quiz.id) != null) ? ((java.util.Map)request.getAttribute("questionCounts")).get(quiz.id) : 0 %> questions</span>
             </div>
             <div class="flex items-center">
                 <div class="w-4 h-4 flex items-center justify-center mr-1">
-                    <i class="ri-user-line"></i>
+                    <i class="ri-book-2-line"></i>
                 </div>
-                <span>1,234 taken</span>
+                <span><%= quiz.category %></span>
             </div>
         </div>
         <button class="w-full bg-primary text-white py-2 px-4 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
-            <a href="QuizLanding.jsp">Start Quiz</a>
+            <a href="quiz-landing?id=<%= quiz.id %>">Start Quiz</a>
         </button>
     </div>
 <%   }
 } %>
-            </div>
-
-            <!-- Pagination -->
-            <div class="flex justify-center items-center space-x-2 mt-8">
-                <button
-                        class="px-3 py-2 border border-gray-300 rounded-button text-gray-600 hover:bg-gray-50 transition-colors"
-                >
-                    <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-arrow-left-line"></i>
-                    </div>
-                </button>
-                <button
-                        class="px-3 py-2 bg-primary text-white rounded-button font-medium"
-                >
-                    1
-                </button>
-                <button
-                        class="px-3 py-2 border border-gray-300 rounded-button text-gray-600 hover:bg-gray-50 transition-colors"
-                >
-                    2
-                </button>
-                <button
-                        class="px-3 py-2 border border-gray-300 rounded-button text-gray-600 hover:bg-gray-50 transition-colors"
-                >
-                    3
-                </button>
-                <span class="px-3 py-2 text-gray-500">...</span>
-                <button
-                        class="px-3 py-2 border border-gray-300 rounded-button text-gray-600 hover:bg-gray-50 transition-colors"
-                >
-                    42
-                </button>
-                <button
-                        class="px-3 py-2 border border-gray-300 rounded-button text-gray-600 hover:bg-gray-50 transition-colors"
-                >
-                    <div class="w-5 h-5 flex items-center justify-center">
-                        <i class="ri-arrow-right-line"></i>
-                    </div>
-                </button>
             </div>
         </div>
 

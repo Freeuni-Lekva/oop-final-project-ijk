@@ -16,6 +16,13 @@ public class QuizServlet extends HttpServlet {
         QuizManager manager = new QuizManager();
         List<Quiz> quizzes = manager.getAllQuizzes();
         request.setAttribute("quizzes", quizzes);
+        java.util.Map<String, Integer> categoryCounts = manager.getQuizCountByCategory();
+        request.setAttribute("categoryCounts", categoryCounts);
+        java.util.Map<Integer, Integer> questionCounts = new java.util.HashMap<>();
+        for (Quiz q : quizzes) {
+            questionCounts.put(q.id, manager.getQuestionCountForQuiz(q.id));
+        }
+        request.setAttribute("questionCounts", questionCounts);
         request.getRequestDispatcher("/Quizzes.jsp").forward(request, response);
     }
 }
