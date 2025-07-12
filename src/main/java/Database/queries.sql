@@ -23,6 +23,16 @@ CREATE TABLE Friends (
     usenameTo TEXT
 );
 
+DROP TABLE IF EXISTS Messages;
+CREATE TABLE Messages (
+    username_from TEXT,
+    username_to TEXT,
+    date TIMESTAMP,
+    isChallenge BOOLEAN,
+    quiz_id BIGINT,
+    text TEXT
+);
+
 DROP TABLE IF EXISTS QuestionsTable;
 CREATE TABLE QuestionsTable (
     id INT,
