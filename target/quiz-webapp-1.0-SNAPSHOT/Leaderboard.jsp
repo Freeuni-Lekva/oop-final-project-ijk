@@ -287,7 +287,7 @@
     <div class="container mx-auto px-4 py-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-                <a href="#" class="text-2xl font-['Pacifico'] text-primary">logo</a>
+                <img href="home" src="./images/Logo1.png" alt="Logo" style="height: 38px; margin-right: 20px">
                 <p class="mt-2 text-sm text-gray-600">Test your knowledge with fun and educational quizzes on a variety of topics.</p>
                 <div class="flex space-x-4 mt-4">
                     <a href="#" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors">
@@ -304,21 +304,20 @@
             <div>
                 <h3 class="font-semibold text-gray-900 mb-3">Quiz Categories</h3>
                 <ul class="space-y-2">
-                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Science & Technology</a></li>
-                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">History & Geography</a></li>
-                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Arts & Literature</a></li>
-                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Sports & Entertainment</a></li>
-                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">General Knowledge</a></li>
+                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Multiple Choice</a></li>
+                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Question-Response</a></li>
+                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Fill in the Blank</a></li>
+                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Picture-Response</a></li>
+                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Speed Challenge</a></li>
                 </ul>
             </div>
             <div>
-                <h3 class="font-semibold text-gray-900 mb-3">Resources</h3>
+                    <h3 class="font-semibold text-gray-900 mb-3">Authors</h3>
                 <ul class="space-y-2">
-                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Help Center</a></li>
-                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Create Your Own Quiz</a></li>
-                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Quiz Guidelines</a></li>
-                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">API Documentation</a></li>
-                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Community Forum</a></li>
+                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Irakli Mirotadze</a></li>
+                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Nikoloz Nikuradze</a></li>
+                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Giorgi Chkhikvadze</a></li>
+                    <li><a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Nikoloz Maltsevi</a></li>
                 </ul>
             </div>
             <div>
@@ -331,7 +330,7 @@
             </div>
         </div>
         <div class="border-t border-gray-200 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
-            <p class="text-sm text-gray-600">© 2025 QuizMaster. All rights reserved.</p>
+            <p class="text-sm text-gray-600">© 2025 Quizition. All rights reserved.</p>
             <div class="flex space-x-4 mt-4 md:mt-0">
                 <a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Privacy Policy</a>
                 <a href="#" class="text-sm text-gray-600 hover:text-primary transition-colors">Terms of Service</a>
