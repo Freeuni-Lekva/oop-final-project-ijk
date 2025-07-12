@@ -71,6 +71,25 @@ function renderQuestion() {
     document.getElementById('question-title').textContent = q.question;
     const optionsList = document.getElementById('options-list');
     optionsList.innerHTML = '';
+    if (q.type === 4) {
+        // Show Logo.png above the question
+        const logoImg = document.createElement('img');
+        logoImg.src = '/images/Logo.png'; // Path relative to your web root
+        logoImg.alt = 'Quiz Logo';
+        logoImg.style.display = 'block';
+        logoImg.style.margin = '0 auto 1rem auto';
+        logoImg.style.maxWidth = '200px'; // Adjust as needed
+        optionsList.appendChild(logoImg);
+
+        // Picture-Response: show image above question
+        const img = document.createElement('img');
+        img.src = q.image; // Use the path directly
+        img.alt = 'Question Image';
+        img.style.maxWidth = '100%';
+        img.style.display = 'block';
+        img.style.margin = '0 auto 1rem auto';
+        optionsList.appendChild(img);
+    }
     if (q.type === 1) {
         // Multiple choice
         let opts = q.possibleAnswers.includes('\n') ? q.possibleAnswers.split('\n') : q.possibleAnswers.split(';');

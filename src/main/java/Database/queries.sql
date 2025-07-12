@@ -36,11 +36,12 @@ CREATE TABLE Messages (
 DROP TABLE IF EXISTS QuestionsTable;
 CREATE TABLE QuestionsTable (
     id INT,
-    ordered SERIAL,
+    ordered INT,
     type INT,
     question TEXT,
     possibleAnswers TEXT,
-    answer TEXT
+    answer TEXT,
+    image TEXT
 );
 
 DROP TABLE IF EXISTS Quizzes;

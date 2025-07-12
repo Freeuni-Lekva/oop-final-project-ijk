@@ -148,6 +148,18 @@
 
     <!-- Quiz Creation Form -->
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <!-- Error/Success Messages -->
+      <% if (request.getAttribute("error") != null) { %>
+        <div class="mb-6 p-4 bg-red-100 border border-red-200 text-red-800 rounded-md">
+          <%= request.getAttribute("error") %>
+        </div>
+      <% } %>
+      <% if (request.getAttribute("success") != null) { %>
+        <div class="mb-6 p-4 bg-green-100 border border-green-200 text-green-800 rounded-md">
+          <%= request.getAttribute("success") %>
+        </div>
+      <% } %>
+      
       <form id="createQuizForm" action="createquiz" method="post">
         <!-- Basic Quiz Information -->
         <div class="mb-8">
@@ -164,11 +176,11 @@
               <select id="quizCategory" name="quizCategory" required 
                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                 <option value="">Select a category</option>
-                <option value="Science & Technology">Speed Challange</option>
-                <option value="History & Geography">Question-Response</option>
-                <option value="Arts & Literature">Fill in the Blank</option>
-                <option value="Sports & Entertainment">Multiple Choice</option>
-                <option value="General Knowledge">Picture-Response</option>
+                <option value="Speed Challange">Speed Challange</option>
+                <option value="Question-Response">Question-Response</option>
+                <option value="Fill in the Blank">Fill in the Blank</option>
+                <option value="Multiple Choice">Multiple Choice</option>
+                <option value="Picture-Response">Picture-Response</option>
               </select>
             </div>
             <div>
