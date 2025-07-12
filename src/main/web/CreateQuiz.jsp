@@ -164,11 +164,11 @@
               <select id="quizCategory" name="quizCategory" required 
                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                 <option value="">Select a category</option>
-                <option value="Science & Technology">Science & Technology</option>
-                <option value="History & Geography">History & Geography</option>
-                <option value="Arts & Literature">Arts & Literature</option>
-                <option value="Sports & Entertainment">Sports & Entertainment</option>
-                <option value="General Knowledge">General Knowledge</option>
+                <option value="Science & Technology">Speed Challange</option>
+                <option value="History & Geography">Question-Response</option>
+                <option value="Arts & Literature">Fill in the Blank</option>
+                <option value="Sports & Entertainment">Multiple Choice</option>
+                <option value="General Knowledge">Picture-Response</option>
               </select>
             </div>
             <div>
@@ -182,10 +182,55 @@
               </select>
             </div>
             <div>
+              <label for="quizDuration" class="block text-sm font-medium text-gray-700 mb-2">Duration (minutes) *</label>
+              <input type="number" id="quizDuration" name="quizDuration" min="1" max="120" required 
+                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                     placeholder="Enter duration in minutes">
+            </div>
+            <div>
               <label for="quizDescription" class="block text-sm font-medium text-gray-700 mb-2">Description</label>
               <textarea id="quizDescription" name="quizDescription" rows="3"
                         class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         placeholder="Describe your quiz (optional)"></textarea>
+            </div>
+          </div>
+          
+          <!-- Quiz Settings -->
+          <div class="mt-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Quiz Settings</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Random Questions</label>
+                  <p class="text-xs text-gray-500">Shuffle question order for each attempt</p>
+                </div>
+                <div class="flex items-center">
+                  <input type="checkbox" id="randomQuestions" name="randomQuestions" value="on" 
+                         class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                </div>
+              </div>
+              
+              <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">One Page Mode</label>
+                  <p class="text-xs text-gray-500">Show all questions on a single page</p>
+                </div>
+                <div class="flex items-center">
+                  <input type="checkbox" id="onePageMode" name="onePageMode" value="on" 
+                         class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                </div>
+              </div>
+              
+              <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Immediate Correction</label>
+                  <p class="text-xs text-gray-500">Show correct answers immediately after each question</p>
+                </div>
+                <div class="flex items-center">
+                  <input type="checkbox" id="immediateCorrection" name="immediateCorrection" value="on" 
+                         class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                </div>
+              </div>
             </div>
           </div>
         </div>

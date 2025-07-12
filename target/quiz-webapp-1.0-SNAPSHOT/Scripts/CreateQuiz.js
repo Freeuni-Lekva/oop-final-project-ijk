@@ -159,6 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const quizTitle = document.getElementById('quizTitle').value.trim();
         const quizCategory = document.getElementById('quizCategory').value;
         const quizDifficulty = document.getElementById('quizDifficulty').value;
+        const quizDuration = document.getElementById('quizDuration').value;
         const questions = questionsContainer.querySelectorAll('.bg-gray-50');
         
         if (!quizTitle) {
@@ -173,6 +174,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!quizDifficulty) {
             alert('Please select a difficulty level.');
+            return false;
+        }
+        
+        if (!quizDuration || quizDuration < 1 || quizDuration > 120) {
+            alert('Please enter a valid duration between 1 and 120 minutes.');
             return false;
         }
         
