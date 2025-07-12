@@ -31,6 +31,7 @@ public class QuizManager {
         public String question;
         public String possibleAnswers;
         public String answer;
+        public String image; // <-- Added image field
         public int quizId; // Add this if you have a quiz_id column in QuestionsTable
     }
 
@@ -138,6 +139,7 @@ public class QuizManager {
                     q.question = rs.getString("question");
                     q.possibleAnswers = rs.getString("possibleAnswers");
                     q.answer = rs.getString("answer");
+                    q.image = rs.getString("image"); // <-- Retrieve image
                     // q.quizId = rs.getInt("quiz_id"); // Uncomment if you have this column
                     questions.add(q);
                 }
@@ -165,6 +167,7 @@ public class QuizManager {
                         q.question = rs.getString("question");
                         q.possibleAnswers = rs.getString("possibleAnswers");
                         q.answer = rs.getString("answer");
+                        q.image = rs.getString("image"); // <-- Retrieve image
                         // q.quizId = rs.getInt("quiz_id"); // Uncomment if you have this column
                         questions.add(q);
                     }
