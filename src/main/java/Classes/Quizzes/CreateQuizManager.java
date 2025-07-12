@@ -74,6 +74,11 @@ public class CreateQuizManager {
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             conn.setAutoCommit(false); // Start transaction
 
+            // If randomQuestions is true, override category and skip user questions
+            if (quizData.randomQuestions) {
+                quizData.category = "Random Quiz";
+            }
+
             // Insert quiz into Quizzes table
             String insertQuizSQL = "INSERT INTO Quizzes (name, category, difficulty, duration, user, description, random, onePage, immediateCorrection) " +
                                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -105,20 +110,42 @@ public class CreateQuizManager {
                 return new QuizCreationResult(false, "Failed to get quiz ID", -1);
             }
 
-            // Insert questions into QuestionsTable
-            String insertQuestionSQL = "INSERT INTO QuestionsTable (id, ordered, type, question, possibleAnswers, answer, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            pstmt = conn.prepareStatement(insertQuestionSQL);
-            
-            for (int i = 0; i < quizData.questions.size(); i++) {
-                QuestionData question = quizData.questions.get(i);
-                pstmt.setInt(1, quizId); // id (quiz id)
-                pstmt.setInt(2, i + 1); // ordered
-                pstmt.setInt(3, question.questionType); // type
-                pstmt.setString(4, question.questionText); // question
-                pstmt.setString(5, question.options); // possibleAnswers (';' separated for MC, empty for others)
-                pstmt.setString(6, question.correctAnswer); // answer
-                pstmt.setString(7, question.imagePath); // image path as TEXT
-                pstmt.executeUpdate();
+            if (quizData.randomQuestions) {
+                // Select 10 random questions (not type 4)
+                String selectRandomSQL = "SELECT * FROM QuestionsTable WHERE type != 4 ORDER BY RAND() LIMIT 10";
+                Statement selectStmt = conn.createStatement();
+                ResultSet randomQs = selectStmt.executeQuery(selectRandomSQL);
+                String insertQuestionSQL = "INSERT INTO QuestionsTable (id, ordered, type, question, possibleAnswers, answer, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                PreparedStatement insertQ = conn.prepareStatement(insertQuestionSQL);
+                int order = 1;
+                while (randomQs.next()) {
+                    insertQ.setInt(1, quizId);
+                    insertQ.setInt(2, order++);
+                    insertQ.setInt(3, randomQs.getInt("type"));
+                    insertQ.setString(4, randomQs.getString("question"));
+                    insertQ.setString(5, randomQs.getString("possibleAnswers"));
+                    insertQ.setString(6, randomQs.getString("answer"));
+                    insertQ.setString(7, randomQs.getString("image"));
+                    insertQ.executeUpdate();
+                }
+                insertQ.close();
+                randomQs.close();
+                selectStmt.close();
+            } else {
+                // Insert user-provided questions as before
+                String insertQuestionSQL = "INSERT INTO QuestionsTable (id, ordered, type, question, possibleAnswers, answer, image) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                pstmt = conn.prepareStatement(insertQuestionSQL);
+                for (int i = 0; i < quizData.questions.size(); i++) {
+                    QuestionData question = quizData.questions.get(i);
+                    pstmt.setInt(1, quizId); // id (quiz id)
+                    pstmt.setInt(2, i + 1); // ordered
+                    pstmt.setInt(3, question.questionType); // type
+                    pstmt.setString(4, question.questionText); // question
+                    pstmt.setString(5, question.options); // possibleAnswers (';' separated for MC, empty for others)
+                    pstmt.setString(6, question.correctAnswer); // answer
+                    pstmt.setString(7, question.imagePath); // image path as TEXT
+                    pstmt.executeUpdate();
+                }
             }
 
             conn.commit(); // Commit transaction

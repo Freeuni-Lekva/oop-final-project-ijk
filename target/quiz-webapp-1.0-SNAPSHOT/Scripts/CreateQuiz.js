@@ -4,6 +4,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add Question Button
     const addQuestionBtn = document.getElementById('addQuestionBtn');
     const questionsContainer = document.getElementById('questionsContainer');
+    const questionsSection = questionsContainer.closest('.mb-8');
+    const randomQuestionsCheckbox = document.getElementById('randomQuestions');
+
+    function toggleQuestionsSection() {
+        if (randomQuestionsCheckbox.checked) {
+            questionsSection.style.display = 'none';
+        } else {
+            questionsSection.style.display = '';
+        }
+    }
+    if (randomQuestionsCheckbox) {
+        randomQuestionsCheckbox.addEventListener('change', toggleQuestionsSection);
+        toggleQuestionsSection(); // Initial state
+    }
     
     addQuestionBtn.addEventListener('click', function() {
         addQuestion();

@@ -175,6 +175,7 @@
               <select id="quizCategory" name="quizCategory" required 
                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
                 <option value="">Select a category</option>
+                <option value="Random Quiz">Random Quiz</option>
                 <option value="Speed Challange">Speed Challange</option>
                 <option value="Question-Response">Question-Response</option>
                 <option value="Fill in the Blank">Fill in the Blank</option>

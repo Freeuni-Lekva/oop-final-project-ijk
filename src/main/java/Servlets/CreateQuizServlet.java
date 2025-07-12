@@ -118,17 +118,22 @@ public class CreateQuizServlet extends HttpServlet {
                 immediateCorrection,
                 username.trim()
             );
-            
-            // Process questions
-            List<QuestionData> questions = processQuestions(request);
-            if (questions.isEmpty()) {
-                request.setAttribute("error", "Please add at least one question.");
-                request.getRequestDispatcher("/CreateQuiz.jsp").forward(request, response);
-                return;
+
+            // If randomQuestions is checked, skip user questions and set category
+            if (randomQuestions) {
+                quizData.category = "Random Quiz";
+                quizData.questions = new ArrayList<>(); // No user questions
+            } else {
+                // Process questions
+                List<QuestionData> questions = processQuestions(request);
+                if (questions.isEmpty()) {
+                    request.setAttribute("error", "Please add at least one question.");
+                    request.getRequestDispatcher("/CreateQuiz.jsp").forward(request, response);
+                    return;
+                }
+                quizData.questions = questions;
             }
-            
-            quizData.questions = questions;
-            
+
             // Create quiz using CreateQuizManager
             CreateQuizManager quizManager = new CreateQuizManager();
             QuizCreationResult result = quizManager.createQuiz(quizData);

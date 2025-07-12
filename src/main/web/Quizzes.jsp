@@ -157,8 +157,8 @@
                 <div class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center text-white">
                     <i class="ri-timer-line ri-xl"></i>
                 </div>
-                <h3 class="font-semibold text-gray-900 text-sm">Speed Challenge</h3>
-                <p class="text-xs text-gray-500 mt-1"><%= ((request.getAttribute("categoryCounts") != null && ((java.util.Map)request.getAttribute("categoryCounts")).get("Speed Challenge") != null) ? ((java.util.Map)request.getAttribute("categoryCounts")).get("Speed Challenge") : 0) %> quizzes</p>
+                <h3 class="font-semibold text-gray-900 text-sm">Speed Challange</h3>
+                <p class="text-xs text-gray-500 mt-1"><%= ((request.getAttribute("categoryCounts") != null && ((java.util.Map)request.getAttribute("categoryCounts")).get("Speed Challange") != null) ? ((java.util.Map)request.getAttribute("categoryCounts")).get("Speed Challange") : 0) %> quizzes</p>
             </div>
             <div class="category-card bg-white rounded-lg p-4 text-center shadow-sm" data-category="Random Quiz">
                 <div class="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-secondary to-secondary/80 rounded-lg flex items-center justify-center text-white">
