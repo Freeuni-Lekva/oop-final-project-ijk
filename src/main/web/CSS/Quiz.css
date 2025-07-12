@@ -334,3 +334,13 @@
 .quiz-result-btn:hover {
     background: #1d4ed8;
 }
+
+/* Use Inter font for all quiz elements */
+body, .quiz-header, .quiz-container, .question-title, .option-label, .nav-btn, input, button, .quiz-header-title {
+  font-family: 'Inter', Arial, sans-serif !important;
+}
+
+/* Remove Pacifico from quiz title */
+/* .quiz-header-title, .logo-font {
+  font-family: 'Pacifico', cursive !important;
+} */
