@@ -53,6 +53,9 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("requestNotification", requestNotification);
                 int userId = accountManager.getUserIdByUsername(username);
                 session.setAttribute("userId", userId);
+                // Set administrator session attribute
+                boolean isAdmin = accountManager.isAdministrator(username);
+                session.setAttribute("administrator", isAdmin);
                 // Fetch quizzes and recent attempts for activity
                 QuizManager manager = new QuizManager();
                 // Recalculate and update user points on login

@@ -117,6 +117,10 @@
                 <div id="userMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
                     <a href="#" id="openAddFriendModal" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Add Friend</a>
                     <a href="#" id="openFriendsModal" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Friends</a>
+                    <% if (Boolean.TRUE.equals(session.getAttribute("administrator"))) { %>
+                    <div class="h-px bg-gray-200 my-1"></div>
+                    <a href="admin" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-100 font-semibold">Admin</a>
+                    <% } %>
                     <div class="h-px bg-gray-200 my-1"></div>
                     <form action="logout" method="post" style="margin: 0;">
                         <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" style="background: none; border: none; cursor: pointer;">
@@ -138,7 +142,7 @@
         </div>
         <!-- Quiz Types Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div class="bg-gradient-to-br from-primary to-primary/80 rounded-lg p-6 text-white transform hover:scale-105 transition-transform cursor-pointer shadow-lg">
+            <a href="quizzes?category=Random Quiz" class="bg-gradient-to-br from-primary to-primary/80 rounded-lg p-6 text-white transform hover:scale-105 transition-transform cursor-pointer shadow-lg block">
                 <div class="w-12 h-12 flex items-center justify-center bg-white/20 rounded-lg mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418.49.552.865 1.102 1.126 1.532.26-.43.636-.98 1.126-1.532C9.173 4.24 10.798 3 13 3v1c-1.798 0-3.173 1.01-4.126 2.082A9.6 9.6 0 0 0 7.556 8a9.6 9.6 0 0 0 1.317 1.918C9.828 10.99 11.204 12 13 12v1c-2.202 0-3.827-1.24-4.874-2.418A10.6 10.6 0 0 1 7 9.05c-.26.43-.636.98-1.126 1.532C4.827 11.76 3.202 13 1 13H.5a.5.5 0 0 1 0-1H1c1.798 0 3.173-1.01 4.126-2.082A9.6 9.6 0 0 0 6.444 8a9.6 9.6 0 0 0-1.317-1.918C4.172 5.01 2.796 4 1 4H.5a.5.5 0 0 1-.5-.5"/>
@@ -153,8 +157,8 @@
                         <i class="ri-arrow-right-line"></i>
                     </div>
                 </div>
-            </div>
-            <div class="bg-gradient-to-br from-secondary to-secondary/80 rounded-lg p-6 text-white transform hover:scale-105 transition-transform cursor-pointer shadow-lg">
+            </a>
+            <a href="quizzes?category=Speed Challenge" class="bg-gradient-to-br from-secondary to-secondary/80 rounded-lg p-6 text-white transform hover:scale-105 transition-transform cursor-pointer shadow-lg block">
                 <div class="w-12 h-12 flex items-center justify-center bg-white/20 rounded-lg mb-4">
                     <i class="ri-timer-line ri-xl"></i>
                 </div>
@@ -166,8 +170,8 @@
                         <i class="ri-arrow-right-line"></i>
                     </div>
                 </div>
-            </div>
-            <div class="bg-gradient-to-br from-accent to-accent/80 rounded-lg p-6 text-white transform hover:scale-105 transition-transform cursor-pointer shadow-lg">
+            </a>
+            <a href="quizzes?category=Daily Challenge" class="bg-gradient-to-br from-accent to-accent/80 rounded-lg p-6 text-white transform hover:scale-105 transition-transform cursor-pointer shadow-lg block">
                 <div class="w-12 h-12 flex items-center justify-center bg-white/20 rounded-lg mb-4">
                     <i class="ri-trophy-line ri-xl"></i>
                 </div>
@@ -179,7 +183,7 @@
                         <i class="ri-arrow-right-line"></i>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
         <!-- Progress and Activity Section -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
