@@ -41,7 +41,7 @@ CREATE TABLE QuestionsTable (
     question TEXT,
     possibleAnswers TEXT,
     answer TEXT,
-    image BLOB
+    image TEXT
 );
 
 DROP TABLE IF EXISTS Quizzes;

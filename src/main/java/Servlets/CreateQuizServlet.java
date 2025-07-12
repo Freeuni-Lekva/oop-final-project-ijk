@@ -14,6 +14,10 @@ import Classes.Quizzes.CreateQuizManager;
 import Classes.Quizzes.CreateQuizManager.QuizData;
 import Classes.Quizzes.CreateQuizManager.QuestionData;
 import Classes.Quizzes.CreateQuizManager.QuizCreationResult;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import jakarta.servlet.http.Part;
 
 @WebServlet("/createquiz")
 public class CreateQuizServlet extends HttpServlet {
@@ -154,6 +158,15 @@ public class CreateQuizServlet extends HttpServlet {
         String[] questionTypes = request.getParameterValues("questionType[]");
         String[] correctAnswers = request.getParameterValues("correctAnswer[]");
         String[] optionTexts = request.getParameterValues("optionText[]");
+        // For image upload
+        Part[] imageParts = null;
+        try {
+            imageParts = request.getParts().stream()
+                .filter(p -> p.getName().equals("image[]"))
+                .toArray(Part[]::new);
+        } catch (Exception e) {
+            imageParts = null;
+        }
         
         // Debug output
         System.out.println("questionTexts: " + java.util.Arrays.toString(questionTexts));
@@ -167,6 +180,7 @@ public class CreateQuizServlet extends HttpServlet {
         }
 
         int optionIndex = 0;
+        int imageIndex = 0;
         for (int i = 0; i < questionTexts.length; i++) {
             String questionText = questionTexts[i];
             String questionTypeStr = questionTypes[i];
@@ -222,6 +236,26 @@ public class CreateQuizServlet extends HttpServlet {
                 questionData.options = CreateQuizManager.buildOptionsString(options);
             } else {
                 questionData.options = "";
+            }
+
+            // Handle image upload for Picture-Response questions
+            if (questionType == 4) { // Picture-Response
+                // Save image file and store path
+                if (imageParts != null && imageIndex < imageParts.length) {
+                    Part imagePart = imageParts[imageIndex++];
+                    if (imagePart != null && imagePart.getSize() > 0) {
+                        try {
+                            String fileName = System.currentTimeMillis() + "_" + imagePart.getSubmittedFileName();
+                            String uploadDir = request.getServletContext().getRealPath("/images/");
+                            Files.createDirectories(Paths.get(uploadDir));
+                            String filePath = uploadDir + java.io.File.separator + fileName;
+                            imagePart.write(filePath);
+                            questionData.imagePath = request.getContextPath() + "/images/" + fileName;
+                        } catch (Exception ex) {
+                            questionData.imagePath = null;
+                        }
+                    }
+                }
             }
 
             questions.add(questionData);

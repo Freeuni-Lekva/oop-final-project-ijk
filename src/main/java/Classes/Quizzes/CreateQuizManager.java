@@ -26,14 +26,14 @@ public class CreateQuizManager {
         public int questionType;
         public String correctAnswer;
         public String options; // ';' separated string for multiple choice, empty for others
-        public byte[] imageData; // For picture-response questions
+        public String imagePath; // For picture-response questions, relative file path
 
         public QuestionData(String questionText, int questionType, String correctAnswer) {
             this.questionText = questionText;
             this.questionType = questionType;
             this.correctAnswer = correctAnswer;
             this.options = "";
-            this.imageData = null;
+            this.imagePath = null;
         }
     }
 
@@ -117,11 +117,7 @@ public class CreateQuizManager {
                 pstmt.setString(4, question.questionText); // question
                 pstmt.setString(5, question.options); // possibleAnswers (';' separated for MC, empty for others)
                 pstmt.setString(6, question.correctAnswer); // answer
-                if (question.imageData != null) {
-                    pstmt.setBytes(7, question.imageData); // image (BLOB)
-                } else {
-                    pstmt.setNull(7, Types.BLOB);
-                }
+                pstmt.setString(7, question.imagePath); // image path as TEXT
                 pstmt.executeUpdate();
             }
 
