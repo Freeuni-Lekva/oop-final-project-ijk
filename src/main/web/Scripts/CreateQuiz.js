@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Question Type *</label>
-                    <select class="question-type w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" onchange="handleQuestionTypeChange(this)">
+                    <select class="question-type w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" onchange="handleQuestionTypeChange(this)" name="questionType[]">
                         <option value="">Select question type</option>
                         <option value="1">Multiple Choice</option>
                         <option value="2">Question-Response</option>
@@ -34,36 +34,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Question Text *</label>
-                    <textarea class="question-text w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" rows="2" placeholder="Enter your question"></textarea>
+                    <textarea class="question-text w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" rows="2" placeholder="Enter your question" name="questionText[]"></textarea>
                 </div>
             </div>
             
             <div class="question-options space-y-3" style="display: none;">
                 <div class="flex items-center space-x-2">
-                    <input type="radio" name="correct${questionCounter}" value="1" class="text-primary">
-                    <input type="text" class="option-text flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Option 1">
+                    <input type="text" class="option-text flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Option 1" name="optionText[]">
                 </div>
                 <div class="flex items-center space-x-2">
-                    <input type="radio" name="correct${questionCounter}" value="2" class="text-primary">
-                    <input type="text" class="option-text flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Option 2">
+                    <input type="text" class="option-text flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Option 2" name="optionText[]">
                 </div>
                 <div class="flex items-center space-x-2">
-                    <input type="radio" name="correct${questionCounter}" value="3" class="text-primary">
-                    <input type="text" class="option-text flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Option 3">
+                    <input type="text" class="option-text flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Option 3" name="optionText[]">
                 </div>
                 <div class="flex items-center space-x-2">
-                    <input type="radio" name="correct${questionCounter}" value="4" class="text-primary">
-                    <input type="text" class="option-text flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Option 4">
-                </div>
-                <div class="mt-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Correct Answer *</label>
-                    <input type="text" class="correct-answer-input w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Enter the correct answer text">
+                    <input type="text" class="option-text flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Option 4" name="optionText[]">
                 </div>
             </div>
             
-            <div class="correct-answer mt-4" style="display: none;">
+            <div class="mt-4 correct-answer-block">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Correct Answer *</label>
-                <input type="text" class="correct-answer-input w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Enter correct answer">
+                <input type="text" class="correct-answer-input w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Enter correct answer" name="correctAnswer[]">
             </div>
             
             <div class="image-upload mt-4" style="display: none;">
@@ -80,18 +72,19 @@ document.addEventListener('DOMContentLoaded', function() {
     window.handleQuestionTypeChange = function(selectElement) {
         const questionDiv = selectElement.closest('.bg-gray-50');
         const questionOptions = questionDiv.querySelector('.question-options');
-        const correctAnswer = questionDiv.querySelector('.correct-answer');
+        const correctAnswerBlock = questionDiv.querySelector('.correct-answer-block');
         const imageUpload = questionDiv.querySelector('.image-upload');
         const questionType = selectElement.value;
         
         // Hide all sections first
         questionOptions.style.display = 'none';
-        correctAnswer.style.display = 'none';
+        correctAnswerBlock.style.display = 'none';
         imageUpload.style.display = 'none';
         
         // Show relevant sections based on question type
         if (questionType === '1') { // Multiple Choice
             questionOptions.style.display = 'block';
+            correctAnswerBlock.style.display = 'block';
             // Reset option inputs for multiple choice
             const optionInputs = questionOptions.querySelectorAll('.option-text');
             optionInputs.forEach((input, index) => {
@@ -99,12 +92,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 input.placeholder = `Option ${index + 1}`;
                 input.style.display = 'block';
             });
-        } else if (questionType === '2') { // Question-Response
-            correctAnswer.style.display = 'block';
-        } else if (questionType === '3') { // Fill in the Blank
-            correctAnswer.style.display = 'block';
+        } else if (questionType === '2' || questionType === '3') { // Question-Response or Fill in the Blank
+            correctAnswerBlock.style.display = 'block';
         } else if (questionType === '4') { // Picture-Response
-            correctAnswer.style.display = 'block';
+            correctAnswerBlock.style.display = 'block';
             imageUpload.style.display = 'block';
         }
     };
@@ -177,6 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const question = questions[i];
             const questionType = question.querySelector('.question-type').value;
             const questionText = question.querySelector('.question-text').value.trim();
+            const correctAnswerInput = question.querySelector('.correct-answer-input');
             
             if (!questionType) {
                 alert(`Please select a question type for question ${i + 1}.`);
@@ -191,25 +183,20 @@ document.addEventListener('DOMContentLoaded', function() {
             // Validate based on question type
             if (questionType === '1') { // Multiple Choice
                 const options = question.querySelectorAll('.option-text');
-                const correctAnswerInput = question.querySelector('.correct-answer-input');
-                
                 let validOptions = 0;
                 options.forEach(option => {
                     if (option.value.trim()) validOptions++;
                 });
-                
                 if (validOptions < 2) {
                     alert(`Please provide at least 2 options for question ${i + 1}.`);
                     return false;
                 }
-                
                 if (!correctAnswerInput.value.trim()) {
                     alert(`Please provide a correct answer for question ${i + 1}.`);
                     return false;
                 }
-            } else if (questionType === '2' || questionType === '3' || questionType === '4') { // Question-Response, Fill in the Blank, or Picture-Response
-                const correctAnswer = question.querySelector('.correct-answer-input').value.trim();
-                if (!correctAnswer) {
+            } else if (questionType === '2' || questionType === '3' || questionType === '4') { // Other types
+                if (!correctAnswerInput.value.trim()) {
                     alert(`Please provide a correct answer for question ${i + 1}.`);
                     return false;
                 }
