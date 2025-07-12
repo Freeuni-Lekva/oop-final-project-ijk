@@ -71,7 +71,7 @@ function renderQuestion() {
     document.getElementById('question-title').textContent = q.question;
     const optionsList = document.getElementById('options-list');
     optionsList.innerHTML = '';
-    if (q.type === 4) {
+    if (q.type === 4 && q.image) {
         // Show Logo.png above the question
         const logoImg = document.createElement('img');
         logoImg.src = '/images/Logo.png'; // Path relative to your web root
@@ -115,7 +115,10 @@ function renderQuestion() {
         const input = document.createElement('input');
         input.type = 'text';
         input.className = 'option-label';
-        input.style.width = '100%';
+        input.style.width = '300px';
+        input.style.maxWidth = '80%';
+        input.style.margin = '0 auto';
+        input.style.display = 'block';
         input.value = answers[currentQuestion] !== null ? answers[currentQuestion] : '';
         input.placeholder = 'Type your answer...';
         input.onkeydown = (e) => {
@@ -128,10 +131,18 @@ function renderQuestion() {
         const btn = document.createElement('button');
         btn.className = 'nav-btn next';
         btn.style.marginTop = '1rem';
+        btn.style.width = '200px';
+        btn.style.display = 'block';
+        btn.style.marginLeft = 'auto';
+        btn.style.marginRight = 'auto';
         btn.textContent = 'Submit Answer';
         btn.onclick = () => {
             answers[currentQuestion] = input.value.trim();
-            renderAll();
+            btn.style.background = '#22c55e'; // green
+            btn.style.color = '#fff';
+            setTimeout(() => {
+                renderAll();
+            }, 500);
         };
         optionsList.appendChild(btn);
     }
@@ -171,7 +182,7 @@ function submitQuiz() {
             <div class="quiz-result-title" style="font-size:2rem; font-weight:600; margin-bottom:1rem;">Quiz Completed!</div>
             <div class="quiz-result-score" style="font-size:1.5rem; margin-bottom:0.5rem;">Score: ${correct} / ${questions.length}</div>
             <div class="quiz-result-percentage" style="font-size:1.25rem; color:#2563eb;">${percent}%</div>
-            <button id="return-home-btn" class="nav-btn submit" style="margin-top:2rem; background:#22c55e; color:#fff; font-size:1.1rem;">Return Home</button>
+            <button id="return-home-btn" class="nav-btn submit" style="margin-top:2rem; background:#22c55e; color:#fff; font-size:1.1rem; display:block; margin-left:auto; margin-right:auto;">Return Home</button>
         </div>
     `;
     document.getElementById('return-home-btn').onclick = function() {
