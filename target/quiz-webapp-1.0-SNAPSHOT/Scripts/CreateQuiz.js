@@ -27,11 +27,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <select class="question-type w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" onchange="handleQuestionTypeChange(this)">
                         <option value="">Select question type</option>
                         <option value="1">Multiple Choice</option>
-                        <option value="2">True/False</option>
-                        <option value="3">Free Text</option>
-                        <option value="4">Fill in the Blank</option>
-                        <option value="5">Matching</option>
-                        <option value="6">Image Question</option>
+                        <option value="2">Question-Response</option>
+                        <option value="3">Fill in the Blank</option>
+                        <option value="4">Picture-Response</option>
                     </select>
                 </div>
                 <div>
@@ -57,9 +55,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <input type="radio" name="correct${questionCounter}" value="4" class="text-primary">
                     <input type="text" class="option-text flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Option 4">
                 </div>
-                <button type="button" class="text-sm text-primary hover:text-primary/80 transition-colors" onclick="addOption(this)">
-                    <i class="ri-add-line mr-1"></i>Add Option
-                </button>
+                <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Correct Answer *</label>
+                    <input type="text" class="correct-answer-input w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Enter the correct answer text">
+                </div>
             </div>
             
             <div class="correct-answer mt-4" style="display: none;">
@@ -93,38 +92,24 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show relevant sections based on question type
         if (questionType === '1') { // Multiple Choice
             questionOptions.style.display = 'block';
-        } else if (questionType === '2') { // True/False
-            questionOptions.style.display = 'block';
-            // Set predefined options for True/False
+            // Reset option inputs for multiple choice
             const optionInputs = questionOptions.querySelectorAll('.option-text');
-            optionInputs[0].value = 'True';
-            optionInputs[1].value = 'False';
-            optionInputs[2].style.display = 'none';
-            optionInputs[3].style.display = 'none';
-        } else if (questionType === '3' || questionType === '4') { // Free Text or Fill in the Blank
+            optionInputs.forEach((input, index) => {
+                input.value = '';
+                input.placeholder = `Option ${index + 1}`;
+                input.style.display = 'block';
+            });
+        } else if (questionType === '2') { // Question-Response
             correctAnswer.style.display = 'block';
-        } else if (questionType === '6') { // Image Question
-            questionOptions.style.display = 'block';
+        } else if (questionType === '3') { // Fill in the Blank
+            correctAnswer.style.display = 'block';
+        } else if (questionType === '4') { // Picture-Response
+            correctAnswer.style.display = 'block';
             imageUpload.style.display = 'block';
         }
     };
     
-    // Add option button
-    window.addOption = function(button) {
-        const questionOptions = button.parentElement;
-        const optionCount = questionOptions.querySelectorAll('.flex.items-center.space-x-2').length;
-        
-        if (optionCount < 6) {
-            const newOption = document.createElement('div');
-            newOption.className = 'flex items-center space-x-2';
-            newOption.innerHTML = `
-                <input type="radio" name="correct${questionCounter}" value="${optionCount + 1}" class="text-primary">
-                <input type="text" class="option-text flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Option ${optionCount + 1}">
-            `;
-            
-            button.parentNode.insertBefore(newOption, button);
-        }
-    };
+
     
     // Remove question
     window.removeQuestion = function(button) {
@@ -204,9 +189,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Validate based on question type
-            if (questionType === '1' || questionType === '2') { // Multiple Choice or True/False
+            if (questionType === '1') { // Multiple Choice
                 const options = question.querySelectorAll('.option-text');
-                const correctAnswer = question.querySelector('input[type="radio"]:checked');
+                const correctAnswerInput = question.querySelector('.correct-answer-input');
                 
                 let validOptions = 0;
                 options.forEach(option => {
@@ -218,11 +203,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     return false;
                 }
                 
-                if (!correctAnswer) {
-                    alert(`Please select a correct answer for question ${i + 1}.`);
+                if (!correctAnswerInput.value.trim()) {
+                    alert(`Please provide a correct answer for question ${i + 1}.`);
                     return false;
                 }
-            } else if (questionType === '3' || questionType === '4') { // Free Text or Fill in the Blank
+            } else if (questionType === '2' || questionType === '3' || questionType === '4') { // Question-Response, Fill in the Blank, or Picture-Response
                 const correctAnswer = question.querySelector('.correct-answer-input').value.trim();
                 if (!correctAnswer) {
                     alert(`Please provide a correct answer for question ${i + 1}.`);
