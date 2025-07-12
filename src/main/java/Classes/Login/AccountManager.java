@@ -193,4 +193,21 @@ public class AccountManager {
             return false;
         }
     }
+
+    public boolean isAdministrator(String username) {
+        String sql = "SELECT administrator FROM Users WHERE username = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getBoolean("administrator");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Database error in isAdministrator: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

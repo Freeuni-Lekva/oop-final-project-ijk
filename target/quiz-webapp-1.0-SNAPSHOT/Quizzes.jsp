@@ -445,6 +445,20 @@ function filterQuizzes() {
 const style = document.createElement('style');
 style.innerHTML = `.active-category { background: #e0f2fe !important; border: 2px solid #38bdf8 !important; }`;
 document.head.appendChild(style);
+// On page load, check for ?category=... in URL
+window.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const cat = params.get('category');
+    if (cat) {
+        const card = Array.from(categoryCards).find(c => c.getAttribute('data-category') === cat);
+        if (card) {
+            categoryCards.forEach(c => c.classList.remove('active-category'));
+            card.classList.add('active-category');
+            activeCategory = cat;
+            filterQuizzes();
+        }
+    }
+});
 </script>
 </body>
 </html>
