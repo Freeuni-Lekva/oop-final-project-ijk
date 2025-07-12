@@ -59,7 +59,7 @@
             <img href="home" src="./images/Logo1.png" alt="Logo" style="height: 38px; margin-right: 20px">
             <nav class="hidden md:flex space-x-6">
                 <a href="home" class="text-gray-600 hover:text-primary transition-colors">Home</a>
-                <a href="quizzes" class="text-primary font-medium">Quizzes</a>
+                <a href="quizzes" class="text-gray-600 hover:text-primary transition-colors">Quizzes</a>
                 <a href="leaderboard" class="text-gray-600 hover:text-primary transition-colors">Leaderboard</a>
                 <a href="createquiz" class="text-gray-600 hover:text-primary transition-colors">Create Quiz</a>
             </nav>
@@ -131,7 +131,7 @@
             <div class="w-4 h-4 flex items-center justify-center text-gray-400">
                 <i class="ri-arrow-right-s-line"></i>
             </div>
-            <span class="text-gray-900 font-medium">Quizzes</span>
+            <span class="text-gray-900 font-medium">Admin Page</span>
         </nav>
     </div>
 </div>
